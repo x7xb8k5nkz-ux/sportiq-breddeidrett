@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportIQ – Breddeidrett</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c0e;--surface:#141416;--card:#1a1a1e;--card2:#202026;
+  --border:#2c2c34;--border2:#38383f;
+  --yellow:#f0e040;--green:#3de8a0;--red:#ff5f5f;--blue:#5b9fff;
+  --orange:#ff8c42;--purple:#b87fff;--teal:#2dd4bf;--pink:#f472b6;
+  --text:#f0f0ee;--muted:#72727d;--muted2:#9494a0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:200;opacity:0.5;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0.9rem 2rem;background:rgba(12,12,14,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:var(--yellow);}
+.logo span{color:var(--text);}
+.nav-tabs{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:3px;}
+.nav-tab{padding:0.38rem 0.85rem;border-radius:100px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.nav-tab.active{background:var(--yellow);color:#000;}
+.nav-tab:hover:not(.active){color:var(--text);}
+.user-pill{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.3rem 0.8rem 0.3rem 0.3rem;transition:border-color 0.2s;}
+.user-pill:hover{border-color:var(--yellow);}
+.user-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),var(--green));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#000;}
+
+/* PAGES */
+.page{display:none;animation:fadeUp 0.3s ease-out both;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.container{max-width:1100px;margin:0 auto;padding:2rem 2rem 4rem;}
+
+/* SHARED */
+.eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.5rem;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.04em;}
+.sec-sub{font-size:0.82rem;color:var(--muted);margin-top:0.15rem;}
+.btn{border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border-radius:100px;}
+.btn-primary{background:var(--yellow);color:#000;padding:0.75rem 1.5rem;font-weight:700;font-size:0.88rem;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,224,64,0.3);}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);padding:0.75rem 1.5rem;font-weight:500;font-size:0.88rem;}
+.btn-ghost:hover{border-color:var(--yellow);color:var(--yellow);}
+.btn-back{display:inline-flex;align-items:center;gap:0.5rem;color:var(--muted2);font-size:0.85rem;cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;margin-bottom:1.8rem;transition:color 0.2s;padding:0;}
+.btn-back:hover{color:var(--yellow);}
+.prog-row{display:flex;justify-content:space-between;font-size:0.73rem;color:var(--muted);margin-bottom:0.35rem;}
+.prog-bar{background:var(--border);border-radius:100px;height:5px;}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--yellow),var(--green));}
+.chip{font-size:0.68rem;font-weight:600;padding:0.22rem 0.55rem;border-radius:100px;background:var(--surface);color:var(--muted);border:1px solid var(--border);}
+
+/* FUN FACT BOX */
+.fun-fact{background:rgba(240,224,64,0.06);border:1px solid rgba(240,224,64,0.2);border-radius:14px;padding:1.1rem 1.3rem;margin:0.8rem 0;}
+.fun-fact-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.4rem;}
+.fun-fact-text{font-size:0.87rem;line-height:1.65;color:var(--muted2);}
+.fun-fact-text strong{color:var(--text);}
+
+/* MYTH BOX */
+.myth-box{background:rgba(255,95,95,0.05);border:1px solid rgba(255,95,95,0.2);border-radius:14px;padding:1.1rem 1.3rem;margin:0.8rem 0;}
+.myth-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:0.3rem;}
+.myth-myth{font-size:0.84rem;font-weight:600;color:var(--text);margin-bottom:0.3rem;}
+.myth-truth{font-size:0.84rem;color:var(--muted2);line-height:1.6;}
+.myth-truth strong{color:var(--green);}
+
+/* INFO BOX */
+.info-box{background:rgba(91,159,255,0.06);border:1px solid rgba(91,159,255,0.2);border-radius:14px;padding:1.1rem 1.3rem;margin:0.8rem 0;}
+.info-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:0.4rem;}
+.info-text{font-size:0.87rem;line-height:1.65;color:var(--muted2);}
+.info-text strong{color:var(--text);}
+
+/* CONTENT BLOCK */
+.content-block{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;margin-bottom:1rem;}
+.cb-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.04em;color:var(--ac,var(--yellow));margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+.cb-list{list-style:none;}
+.cb-list li{display:flex;gap:0.8rem;padding:0.65rem 0;border-bottom:1px solid var(--border);font-size:0.87rem;line-height:1.55;color:var(--muted2);}
+.cb-list li:last-child{border-bottom:none;}
+.cb-term{font-weight:700;color:var(--text);min-width:150px;flex-shrink:0;}
+.tactic-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:0.8rem;}
+.tactic-title{font-weight:700;font-size:0.88rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.5rem;}
+.tactic-desc{font-size:0.82rem;color:var(--muted2);line-height:1.6;}
+
+/* SUPERKOMPENSASJON VISUAL */
+.superkomp-visual{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin:1rem 0;}
+.sk-chart{position:relative;height:160px;margin:1rem 0;}
+.sk-svg{width:100%;height:100%;}
+.sk-legend{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:0.8rem;}
+.sk-legend-item{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:var(--muted2);}
+.sk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* ENERGISYSTEM VISUAL */
+.energy-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin:1rem 0;}
+.energy-bar-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center;}
+.ebar-icon{font-size:1.8rem;margin-bottom:0.4rem;}
+.ebar-title{font-weight:700;font-size:0.85rem;margin-bottom:0.2rem;}
+.ebar-sub{font-size:0.75rem;color:var(--muted);margin-bottom:0.8rem;line-height:1.4;}
+.ebar-time{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;line-height:1;}
+.ebar-time-lbl{font-size:0.68rem;color:var(--muted);margin-top:0.1rem;}
+.ebar-sport{font-size:0.72rem;color:var(--muted2);margin-top:0.5rem;line-height:1.4;}
+
+/* MUSKELFIBERTYPE */
+.fiber-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+.fiber-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem;}
+.fiber-title{font-weight:700;font-size:0.9rem;margin-bottom:0.5rem;}
+.fiber-row{display:flex;justify-content:space-between;font-size:0.78rem;padding:0.3rem 0;border-bottom:1px solid var(--border);}
+.fiber-row:last-child{border-bottom:none;}
+.fiber-key{color:var(--muted);}
+.fiber-val{font-weight:600;color:var(--text);}
+
+/* ØKTPLAN */
+.okt-header{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;}
+.okt-phase{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:0.8rem;overflow:hidden;}
+.okt-phase-header{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;border-bottom:1px solid var(--border);}
+.okt-phase-icon{font-size:1.4rem;flex-shrink:0;}
+.okt-phase-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.04em;}
+.okt-phase-time{font-size:0.75rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:100px;margin-left:auto;}
+.okt-phase-body{padding:1rem 1.2rem;}
+.okt-row{display:grid;grid-template-columns:2fr 3fr 2fr;gap:0.8rem;padding:0.65rem 0;border-bottom:1px solid var(--border);font-size:0.83rem;}
+.okt-row:last-child{border-bottom:none;}
+.okt-row-head{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);padding:0.4rem 0;border-bottom:1px solid var(--border);}
+.okt-hva{font-weight:600;color:var(--text);}
+.okt-hvordan{color:var(--muted2);line-height:1.45;}
+.okt-hvorfor{font-size:0.78rem;color:var(--muted);font-style:italic;line-height:1.4;}
+.okt-why-box{background:rgba(240,224,64,0.05);border:1px solid rgba(240,224,64,0.15);border-radius:12px;padding:1rem 1.2rem;margin-top:1rem;}
+.okt-why-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.6rem;}
+.okt-why-list{list-style:none;}
+.okt-why-list li{font-size:0.84rem;color:var(--muted2);padding:0.3rem 0;display:flex;gap:0.6rem;line-height:1.5;}
+.okt-why-list li::before{content:'▸';color:var(--yellow);flex-shrink:0;}
+
+/* TABS */
+.tab-nav{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:1.5rem;}
+.tab-btn{flex:1;padding:0.5rem;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.tab-btn.active{background:var(--card2);color:var(--text);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* QUIZ */
+.quiz-block{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;margin-bottom:1rem;}
+.quiz-block-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.04em;margin-bottom:0.2rem;}
+.quiz-block-sub{font-size:0.78rem;color:var(--muted);margin-bottom:1.1rem;}
+.qb-question{font-weight:600;font-size:0.9rem;margin-bottom:0.8rem;line-height:1.4;}
+.qb-opts{display:flex;flex-direction:column;gap:0.5rem;}
+.qb-opt{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:0.7rem 1rem;display:flex;align-items:center;gap:0.8rem;cursor:pointer;transition:all 0.18s;font-size:0.85rem;color:var(--text);text-align:left;font-family:'DM Sans',sans-serif;}
+.qb-opt:hover{border-color:var(--border2);background:var(--card2);}
+.qb-opt.correct{background:rgba(61,232,160,0.08);border-color:var(--green);color:var(--green);}
+.qb-opt.wrong{background:rgba(255,95,95,0.08);border-color:var(--red);color:var(--red);}
+.qb-letter{width:26px;height:26px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;}
+.qb-opt.correct .qb-letter{background:var(--green);color:#000;border-color:var(--green);}
+.qb-opt.wrong .qb-letter{background:var(--red);color:#fff;border-color:var(--red);}
+.qb-feedback{margin-top:0.9rem;padding:0.9rem 1rem;border-radius:10px;font-size:0.83rem;line-height:1.6;display:none;}
+.qb-feedback.show{display:block;}
+.qb-correct-fb{background:rgba(61,232,160,0.07);border:1px solid rgba(61,232,160,0.2);color:var(--muted2);}
+.qb-wrong-fb{background:rgba(255,95,95,0.07);border:1px solid rgba(255,95,95,0.2);color:var(--muted2);}
+
+/* HOME */
+.home-hero{display:grid;grid-template-columns:1fr 360px;gap:3rem;align-items:start;padding-top:1rem;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,4.8rem);line-height:0.92;letter-spacing:0.02em;}
+h1 em{font-style:normal;color:var(--yellow);display:block;}
+.hero-sub{color:var(--muted2);font-size:0.93rem;line-height:1.65;margin-top:1rem;}
+.hero-cta{display:flex;gap:0.7rem;margin-top:1.8rem;flex-wrap:wrap;}
+.xp-section{margin-top:2rem;padding-top:1.8rem;border-top:1px solid var(--border);}
+.xp-lbl{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem;}
+.xp-bar{background:var(--border);border-radius:100px;height:8px;}
+.xp-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--yellow),var(--green));width:0%;transition:width 0.6s ease-out;}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:1.2rem;}
+.mini-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.9rem;text-align:center;}
+.mini-stat-val{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--yellow);line-height:1;}
+.mini-stat-lbl{font-size:0.7rem;color:var(--muted);margin-top:0.2rem;}
+.floating-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.4rem;animation:float 4s ease-in-out infinite;position:relative;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.float-badge{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.45rem 0.9rem;font-size:0.75rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.fb-top{top:-12px;right:-12px;animation:fbF1 3.5s ease-in-out infinite;}
+.fb-bot{bottom:-12px;left:-12px;animation:fbF2 3.5s ease-in-out infinite 1s;}
+@keyframes fbF1{0%,100%{transform:rotate(2deg) translateY(0)}50%{transform:rotate(2deg) translateY(-6px)}}
+@keyframes fbF2{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-5px)}}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.active-pill{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(61,232,160,0.1);color:var(--green);font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:100px;margin-bottom:0.9rem;}
+
+/* QUICK GRID */
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;}
+.quick-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac,var(--yellow));transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.quick-card:hover::before{transform:scaleX(1);}
+.quick-card:hover{transform:translateY(-4px);border-color:var(--border2);box-shadow:0 12px 32px rgba(0,0,0,0.3);}
+.qc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.6rem;}
+.qc-emoji{font-size:1.8rem;}
+.qc-pct{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--ac,var(--yellow));}
+.qc-title{font-weight:700;font-size:0.9rem;margin-bottom:0.2rem;}
+.qc-sub{font-size:0.75rem;color:var(--muted);margin-bottom:0.8rem;}
+
+/* MODULER */
+.mod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+.mod-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.mod-card::after{content:'→';position:absolute;right:1.4rem;top:50%;transform:translateY(-50%);font-size:1.2rem;color:var(--muted);transition:all 0.2s;}
+.mod-card:hover::after{transform:translateY(-50%) translateX(4px);color:var(--ac,var(--yellow));}
+.mod-card:hover{transform:translateY(-4px);border-color:var(--border2);box-shadow:0 16px 40px rgba(0,0,0,0.3);}
+.mod-card.wide{grid-column:span 2;}
+.mc-top{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+.mc-icon{font-size:2.4rem;}
+.mc-label{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ac,var(--yellow));margin-bottom:0.2rem;}
+.mc-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.03em;line-height:1.1;}
+.mc-desc{font-size:0.83rem;color:var(--muted2);line-height:1.6;margin-bottom:1.2rem;padding-right:2rem;}
+.mc-chips{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+
+/* SPORT GRID */
+.sport-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.sport-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.sport-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--sc,var(--yellow));transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.sport-card:hover::before{transform:scaleX(1);}
+.sport-card:hover{transform:translateY(-5px);border-color:var(--border2);box-shadow:0 16px 40px rgba(0,0,0,0.3);}
+.sc-emoji{font-size:2.4rem;margin-bottom:0.7rem;display:block;}
+.sc-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.03em;margin-bottom:0.3rem;}
+.sc-sub{font-size:0.78rem;color:var(--muted2);margin-bottom:1rem;line-height:1.5;}
+
+/* RANGERING */
+.lb-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:1rem;}
+.lb-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.lb-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.04em;}
+.lb-row{display:flex;align-items:center;gap:1rem;padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);transition:background 0.2s;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row:hover{background:var(--card2);}
+.lb-row.me{background:rgba(240,224,64,0.04);border-left:3px solid var(--yellow);}
+.lb-rank{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;width:26px;text-align:center;}
+.r1{color:#ffd700;}.r2{color:#c0c0c0;}.r3{color:#cd7f32;}.rn{color:var(--muted);}
+.lb-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;color:#000;flex-shrink:0;}
+.lb-name{font-weight:600;font-size:0.88rem;flex:1;}
+.lb-pts{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--yellow);}
+.streak-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.4rem;display:flex;justify-content:space-between;align-items:center;}
+.streak-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--yellow);line-height:1;}
+.streak-days{display:flex;gap:0.4rem;margin-top:0.8rem;}
+.sday{width:32px;height:32px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:var(--muted);}
+.sday.done{background:rgba(240,224,64,0.13);border-color:var(--yellow);color:var(--yellow);}
+.sday.today{background:var(--yellow);border-color:var(--yellow);color:#000;box-shadow:0 0 10px rgba(240,224,64,0.35);}
+
+/* TRAINING PRINCIPLE CARDS */
+.principle-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;margin-bottom:0.8rem;display:flex;gap:1.2rem;align-items:flex-start;}
+.principle-icon{font-size:2rem;flex-shrink:0;margin-top:2px;}
+.principle-title{font-weight:700;font-size:0.95rem;margin-bottom:0.3rem;}
+.principle-desc{font-size:0.84rem;color:var(--muted2);line-height:1.6;}
+.principle-ex{margin-top:0.5rem;font-size:0.78rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;color:var(--muted2);}
+.principle-ex strong{color:var(--yellow);}
+
+/* EX TABLE */
+.ex-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.ex-table th{text-align:left;padding:0.6rem 0.8rem;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.ex-table td{padding:0.7rem 0.8rem;border-bottom:1px solid var(--border);color:var(--muted2);vertical-align:top;}
+.ex-table tr:last-child td{border-bottom:none;}
+.ex-table tr:hover td{background:var(--card2);}
+.ex-name{font-weight:600;color:var(--text);}
+.ex-muscle{font-size:0.73rem;color:var(--muted);}
+
+/* PLAN BUILDER */
+.plan-day{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:0.7rem;}
+.plan-day-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem;}
+.plan-day-title{font-weight:700;font-size:0.88rem;}
+.plan-day-tag{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:100px;}
+.plan-ex{font-size:0.8rem;color:var(--muted2);display:flex;gap:0.5rem;align-items:flex-start;margin-bottom:0.3rem;}
+.plan-ex::before{content:'•';color:var(--yellow);flex-shrink:0;margin-top:1px;}
+
+/* SPORT DETAIL */
+.sport-detail-header{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.sport-detail-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--sc,var(--yellow));}
+.sdh-top{display:flex;align-items:flex-start;gap:1.5rem;margin-bottom:1.5rem;}
+.sdh-icon{font-size:3.5rem;}
+.sdh-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.03em;line-height:1;}
+.sdh-desc{font-size:0.88rem;color:var(--muted2);line-height:1.65;margin-top:0.5rem;}
+.sdh-stats{display:flex;gap:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);}
+.sdh-sv{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1;}
+.sdh-sl{font-size:0.7rem;color:var(--muted);margin-top:0.1rem;}
+
+@media(max-width:768px){
+  .home-hero{grid-template-columns:1fr;}.floating-card{display:none;}
+  .mod-grid{grid-template-columns:1fr;}.mod-card.wide{grid-column:span 1;}
+  .sport-grid{grid-template-columns:1fr 1fr;}.quick-grid{grid-template-columns:1fr 1fr;}
+  .energy-bars{grid-template-columns:1fr;}.fiber-grid{grid-template-columns:1fr;}
+  .okt-row{grid-template-columns:1fr;}.nav-tabs{display:none;}
+}
+
+/* TOAST */
+#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:0.8rem 1.4rem;font-size:0.85rem;font-weight:600;opacity:0;transition:all 0.3s;z-index:10000;pointer-events:none;white-space:nowrap;}
+
+/* VELKOMSTSKJERM */
+#welcome-overlay{
+  position:fixed;inset:0;z-index:60000;
+  background:var(--bg);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:2rem;
+  overflow-y:auto;
+}
+.welcome-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:24px;padding:2.5rem 2rem;
+  max-width:480px;width:100%;text-align:center;
+  animation:fadeUp 0.4s ease-out both;
+  margin:auto 0;
+}
+.welcome-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:2.6rem;
+  letter-spacing:0.06em;color:var(--yellow);margin-bottom:0.2rem;
+}
+.welcome-logo span{color:var(--text);}
+.welcome-tagline{
+  font-size:0.78rem;font-weight:700;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:1.4rem;
+}
+.welcome-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;
+  letter-spacing:0.03em;margin-bottom:0.3rem;line-height:1.1;
+}
+.welcome-sub{font-size:0.88rem;color:var(--muted2);line-height:1.6;margin-bottom:0;}
+.welcome-field-label{
+  text-align:left;font-size:0.73rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:0.4rem;display:block;
+}
+.welcome-input{
+  width:100%;background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;padding:0.85rem 1rem;font-size:0.95rem;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  transition:border-color 0.2s;margin-bottom:1rem;outline:none;
+}
+.welcome-input:focus{border-color:var(--yellow);}
+.welcome-input::placeholder{color:var(--muted);}
+.welcome-btn{
+  width:100%;background:var(--yellow);color:#000;
+  border:none;border-radius:12px;padding:0.9rem;
+  font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;
+  cursor:pointer;transition:all 0.2s;
+}
+.welcome-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,224,64,0.35);}
+.welcome-btn:disabled{opacity:0.4;cursor:default;transform:none;box-shadow:none;}
+.welcome-note{font-size:0.73rem;color:var(--muted);margin-top:1rem;line-height:1.5;}
+
+/* SETTINGS MODAL */
+#settings-modal{
+  position:fixed;inset:0;z-index:40000;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;padding:2rem;
+}
+#settings-modal.open{display:flex;}
+.settings-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:2rem;max-width:400px;width:100%;
+  animation:fadeUp 0.25s ease-out both;
+}
+.settings-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
+  letter-spacing:0.04em;margin-bottom:1.4rem;
+}
+.settings-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0.8rem 0;border-bottom:1px solid var(--border);
+  font-size:0.88rem;
+}
+.settings-row:last-of-type{border-bottom:none;}
+.settings-key{color:var(--muted2);}
+.settings-val{font-weight:600;color:var(--text);}
+.settings-actions{margin-top:1.4rem;display:flex;flex-direction:column;gap:0.6rem;}
+.btn-danger{
+  background:rgba(255,95,95,0.1);border:1px solid rgba(255,95,95,0.3);
+  color:var(--red);border-radius:10px;padding:0.75rem;
+  font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-danger:hover{background:rgba(255,95,95,0.2);}
+.btn-close-settings{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--muted2);border-radius:10px;padding:0.75rem;
+  font-family:'DM Sans',sans-serif;font-size:0.88rem;cursor:pointer;transition:all 0.2s;
+}
+.btn-close-settings:hover{color:var(--text);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SPORT<span>IQ</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-page="home" onclick="nav('home',this)">Hjem</button>
+    <button class="nav-tab" data-page="moduler" onclick="nav('moduler',this)">Moduler</button>
+    <button class="nav-tab" data-page="idretter" onclick="nav('idretter',this)">Idretter</button>
+    <button class="nav-tab" data-page="trening" onclick="nav('trening',this)">Trening</button>
+    <button class="nav-tab" data-page="oektplan" onclick="nav('oektplan',this)">Øktplan</button>
+    <button class="nav-tab" data-page="rangering" onclick="nav('rangering',this)">Rangering</button>
+  </div>
+  <div class="user-pill">
+    <div class="user-av" id="nav-avatar">?</div>
+    <span style="font-size:0.8rem;font-weight:600;" id="nav-name">...</span>
+  </div>
+</nav>
+
+<!-- ===== VELKOMSTSKJERM ===== -->
+<div id="welcome-overlay">
+  <div class="welcome-card">
+
+    <!-- Logo -->
+    <div class="welcome-logo">SPORT<span>IQ</span></div>
+    <div class="welcome-tagline">Breddeidrett 1 & 2 · IDR06-03</div>
+
+    <!-- Hilsen fra Ole Johan -->
+    <div style="background:rgba(240,224,64,0.07);border:1px solid rgba(240,224,64,0.18);border-radius:14px;padding:1.2rem;margin-bottom:1.6rem;text-align:left;">
+      <div style="font-size:1.4rem;margin-bottom:0.5rem;">👋</div>
+      <p style="font-size:0.86rem;color:var(--muted2);line-height:1.7;margin:0 0 0.8rem;">
+        Hei! Jeg har laget denne appen fordi jeg tror at <strong style="color:var(--text)">kunnskap og glede henger sammen</strong> – og fordi læreboka ikke alltid er det morsomste selskapet på bussen hjem.
+      </p>
+      <p style="font-size:0.86rem;color:var(--muted2);line-height:1.7;margin:0 0 0.8rem;">
+        Her finner du alt du trenger for å forstå breddeidrett skikkelig. <strong style="color:var(--text)">Jo mer du bruker den, jo bedre blir du</strong> – akkurat som trening, bare uten svetten.
+      </p>
+      <p style="font-size:0.86rem;color:var(--muted2);line-height:1.7;margin:0;">
+        Lykke til, og husk: <em style="color:var(--yellow)">det finnes ingen snarveier til god form – men det finnes apper som gjør veien morsommere.</em>
+      </p>
+      <div style="margin-top:0.9rem;font-size:0.8rem;font-weight:600;color:var(--muted);">— Ole Johan 🏅</div>
+    </div>
+
+    <!-- Skjema -->
+    <div style="text-align:left;">
+      <label class="welcome-field-label" for="input-name">Ditt fornavn</label>
+      <input class="welcome-input" id="input-name" type="text" placeholder="F.eks. Magnus" maxlength="30" autocomplete="off" oninput="checkWelcomeReady()" onkeydown="if(event.key==='Enter')startApp()">
+
+      <label class="welcome-field-label" for="input-class">Din klasse <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)">(valgfritt)</span></label>
+      <input class="welcome-input" id="input-class" type="text" placeholder="F.eks. 2IDA" maxlength="20" autocomplete="off">
+    </div>
+
+    <button class="welcome-btn" id="welcome-btn" onclick="startApp()" disabled>Kom i gang →</button>
+
+    <div class="welcome-note">🔒 Navn og progresjon lagres kun lokalt i nettleseren på denne enheten – ingenting sendes til noen server.</div>
+  </div>
+</div>
+
+<!-- ===== INNSTILLINGER-MODAL ===== -->
+<div id="settings-modal">
+  <div class="settings-card">
+    <div class="settings-title">⚙️ Innstillinger</div>
+    <div class="settings-row"><span class="settings-key">Navn</span><span class="settings-val" id="s-name">–</span></div>
+    <div class="settings-row"><span class="settings-key">Klasse</span><span class="settings-val" id="s-class">–</span></div>
+    <div class="settings-row"><span class="settings-key">XP opptjent</span><span class="settings-val" id="s-xp">–</span></div>
+    <div class="settings-row"><span class="settings-key">Quiz besvart</span><span class="settings-val" id="s-quiz">–</span></div>
+    <div class="settings-row"><span class="settings-key">Streak</span><span class="settings-val" id="s-streak">–</span></div>
+    <div class="settings-row"><span class="settings-key">Data lagret</span><span class="settings-val">Lokalt i nettleseren</span></div>
+    <div class="settings-actions">
+      <button class="btn-danger" onclick="resetApp()">🗑️ Slett alle data og start på nytt</button>
+      <button class="btn-close-settings" onclick="closeSettings()">Lukk</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HOME ===== -->
+<div id="page-home" class="page active">
+<div class="container">
+
+  <!-- HERO -->
+  <div class="home-hero">
+    <div>
+      <div class="eyebrow">Breddeidrett 1 & 2 · IDR06-03 · Vår 2026</div>
+      <h1>Hei, <em id="hero-name">!</em></h1>
+      <p class="hero-sub">Alt du trenger til Breddeidrett 1 & 2 på ett sted – regler, teknikk, taktikk, treningslære og øktplanlegging. Bygget direkte på kompetansemålene.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="nav('idretter')">⚽ Se alle idretter</button>
+        <button class="btn btn-ghost" onclick="nav('trening')">💪 Treningslære</button>
+      </div>
+
+      <!-- XP + NESTE STEG -->
+      <div class="xp-section">
+        <div class="xp-lbl">
+          <span>Nivå <span id="xp-level">1</span> · <strong><span id="xp-display">0</span> XP</strong></span>
+          <span style="color:var(--muted2)"><span id="xp-to-next">100</span> XP til neste nivå</span>
+        </div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-bar-fill" style="width:0%;animation:none"></div></div>
+        <div style="margin-top:0.8rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="openSport('volleyball')">
+          <div style="font-size:0.8rem;color:var(--muted2);">
+            <span style="color:var(--yellow);font-weight:700;">Neste steg:</span>
+            Ta quizen i Volleyball for +20 XP
+          </div>
+          <span style="color:var(--yellow);font-size:0.85rem;">→</span>
+        </div>
+      </div>
+
+      <div class="mini-stats">
+        <div class="mini-stat"><div class="mini-stat-val">5</div><div class="mini-stat-lbl">Idretter</div></div>
+        <div class="mini-stat"><div class="mini-stat-val" id="stat-completed">0</div><div class="mini-stat-lbl">Quiz fullført</div></div>
+        <div class="mini-stat"><div class="mini-stat-val" id="stat-streak">0🔥</div><div class="mini-stat-lbl">Dagers streak</div></div>
+      </div>
+    </div>
+
+    <!-- FLOATING CARD – nå med pågående IDRETT -->
+    <div style="padding-top:1rem;position:relative;">
+      <div class="floating-card">
+        <div class="float-badge fb-top">🏐 Volleyball pågår!</div>
+        <div class="float-badge fb-bot">⚡ +20 XP for quiz</div>
+        <div class="active-pill"><div class="dot"></div>Fortsett der du slapp</div>
+        <span style="font-size:2.2rem;display:block;margin-bottom:0.6rem;">🏐</span>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.03em;margin-bottom:0.3rem;">Volleyball</div>
+        <div style="font-size:0.8rem;color:var(--muted2);margin-bottom:1.2rem;line-height:1.5;">Regler · Teknikk · Taktikk · Skadeforebygging</div>
+        <div class="prog-row"><span>Progresjon</span><span id="floating-card-pct">0%</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="floating-card-fill" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--teal))"></div></div>
+        <button class="btn btn-primary" style="width:100%;margin-top:1rem;border-radius:10px;" onclick="openSport('volleyball')">Fortsett →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HVA ER SPORTIQ -->
+  <div style="margin-top:3rem;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center;">
+      <div>
+        <div class="eyebrow" style="margin-bottom:0.4rem;">Hva dekker SportIQ?</div>
+        <div class="sec-title" style="font-size:1.3rem;margin-bottom:0.8rem;">Alt til Breddeidrett 1 & 2</div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <div style="display:flex;gap:0.7rem;font-size:0.84rem;align-items:flex-start;">
+            <span style="color:var(--yellow);flex-shrink:0;font-weight:700;">⚽</span>
+            <span style="color:var(--muted2);">5 fordypningsidretter med regler, teknikk og taktikk</span>
+          </div>
+          <div style="display:flex;gap:0.7rem;font-size:0.84rem;align-items:flex-start;">
+            <span style="color:var(--green);flex-shrink:0;font-weight:700;">⚡</span>
+            <span style="color:var(--muted2);">Treningslære: energisystemer, superkompensasjon, muskelfibertyper</span>
+          </div>
+          <div style="display:flex;gap:0.7rem;font-size:0.84rem;align-items:flex-start;">
+            <span style="color:var(--orange);flex-shrink:0;font-weight:700;">📋</span>
+            <span style="color:var(--muted2);">Øktplanlegging med ferdig mal og volleyball-eksempel</span>
+          </div>
+          <div style="display:flex;gap:0.7rem;font-size:0.84rem;align-items:flex-start;">
+            <span style="color:var(--blue);flex-shrink:0;font-weight:700;">🧠</span>
+            <span style="color:var(--muted2);">Quiz med faglig forklaring etter hvert svar</span>
+          </div>
+          <div style="display:flex;gap:0.7rem;font-size:0.84rem;align-items:flex-start;">
+            <span style="color:var(--purple);flex-shrink:0;font-weight:700;">🏆</span>
+            <span style="color:var(--muted2);">XP, streak og klassens rangering for motivasjon</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;cursor:pointer;" onclick="nav('idretter')">
+          <div style="font-size:1.4rem;margin-bottom:0.2rem;">🏟️</div>
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text);">Idretter</div>
+          <div style="font-size:0.68rem;color:var(--muted);">5 idretter</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;cursor:pointer;" onclick="nav('trening')">
+          <div style="font-size:1.4rem;margin-bottom:0.2rem;">⚡</div>
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text);">Treningslære</div>
+          <div style="font-size:0.68rem;color:var(--muted);">5 faglige temaer</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;cursor:pointer;" onclick="nav('oektplan')">
+          <div style="font-size:1.4rem;margin-bottom:0.2rem;">📋</div>
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text);">Øktplan</div>
+          <div style="font-size:0.68rem;color:var(--muted);">Mal + eksempel</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;cursor:pointer;" onclick="nav('rangering')">
+          <div style="font-size:1.4rem;margin-bottom:0.2rem;">🏆</div>
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text);">Rangering</div>
+          <div style="font-size:0.68rem;color:var(--muted);">Din klasse</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DINE IDRETTER – alle 5 synlig på forsiden -->
+  <div style="margin-top:2.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;">
+      <div>
+        <div class="sec-title">Dine idretter</div>
+        <div class="sec-sub">Klikk for å starte – regler, teknikk, taktikk og quiz</div>
+      </div>
+      <span style="font-size:0.83rem;color:var(--yellow);cursor:pointer;" onclick="nav('idretter')">Se alle →</span>
+    </div>
+    <!-- 5-grid: 3 øverst, 2 nederst sentrert -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:0.8rem;">
+      <div class="quick-card" style="--ac:var(--blue)" data-sport="volleyball" onclick="openSport('volleyball')">
+        <div class="qc-top"><span class="qc-emoji">🏐</span><span class="qc-pct sport-prog-pct" style="color:var(--blue)">0%</span></div>
+        <div class="qc-title">Volleyball</div>
+        <div class="qc-sub">6v6 · Serve, mottak, sett, spiker</div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--teal))"></div></div>
+      </div>
+      <div class="quick-card" style="--ac:var(--green)" data-sport="badminton" onclick="openSport('badminton')">
+        <div class="qc-top"><span class="qc-emoji">🏸</span><span class="qc-pct sport-prog-pct" style="color:var(--green)">0%</span></div>
+        <div class="qc-title">Badminton</div>
+        <div class="qc-sub">Singel & dobbel · 490 km/t smash</div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--green),var(--teal))"></div></div>
+      </div>
+      <div class="quick-card" style="--ac:var(--teal)" data-sport="pickleball" onclick="openSport('pickleball')">
+        <div class="qc-top"><span class="qc-emoji">🥒</span><span class="qc-pct sport-prog-pct" style="color:var(--teal)">0%</span></div>
+        <div class="qc-title">Pickleball</div>
+        <div class="qc-sub">Raskest voksende idrett · Kitchen-spill</div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--teal),var(--green))"></div></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.8rem;max-width:66%;margin:0 auto;">
+      <div class="quick-card" style="--ac:var(--yellow)" data-sport="tennis" onclick="openSport('tennis')">
+        <div class="qc-top"><span class="qc-emoji">🎾</span><span class="qc-pct sport-prog-pct" style="color:var(--yellow)">0%</span></div>
+        <div class="qc-title">Tennis</div>
+        <div class="qc-sub">Forehand, backhand, serve</div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%"></div></div>
+      </div>
+      <div class="quick-card" style="--ac:var(--orange)" data-sport="fotball" onclick="openSport('fotball')">
+        <div class="qc-top"><span class="qc-emoji">⚽</span><span class="qc-pct sport-prog-pct" style="color:var(--orange)">0%</span></div>
+        <div class="qc-title">Fotball</div>
+        <div class="qc-sub">Pasning, dribbling, taktikk</div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--orange),var(--yellow))"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEORI-SEKSJONEN – kompakt under idrettene -->
+  <div style="margin-top:2.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;">
+      <div>
+        <div class="sec-title">Teori & planlegging</div>
+        <div class="sec-sub">Treningslære, fysiologi og øktplanlegging</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;">
+      <div class="quick-card" style="--ac:var(--yellow)" data-module="trening" onclick="nav('trening')">
+        <div class="qc-top"><span class="qc-emoji">⚡</span><span class="qc-pct mod-prog-pct" style="color:var(--yellow)">0%</span></div>
+        <div class="qc-title">Treningslære & fysiologi</div>
+        <div class="qc-sub">Energi · Superkomp. · Muskler</div>
+        <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%"></div></div>
+      </div>
+      <div class="quick-card" style="--ac:var(--orange)" data-module="oektplan" onclick="nav('oektplan')">
+        <div class="qc-top"><span class="qc-emoji">📋</span><span class="mod-prog-pct" style="font-size:0.75rem;font-weight:700;color:var(--orange)">0%</span></div>
+        <div class="qc-title">Øktplanlegging</div>
+        <div class="qc-sub">Mal · Eksempel · Kompetanse</div>
+        <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%"></div></div>
+      </div>
+      <div class="quick-card" style="--ac:var(--purple)" data-module="moduler" onclick="nav('moduler')">
+        <div class="qc-top"><span class="qc-emoji">🗂️</span><span class="mod-prog-pct" style="font-size:0.72rem;color:var(--muted)">0%</span></div>
+        <div class="qc-title">Alle moduler</div>
+        <div class="qc-sub">Helse · Samhandling · Lek</div>
+        <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--blue))"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ===== MODULER ===== -->
+<div id="page-moduler" class="page">
+<div class="container">
+  <div class="eyebrow" style="margin-top:0.5rem;">IDR06-03 · Alle læringsområder</div>
+  <div class="sec-title" style="margin-bottom:0.3rem;">Alle moduler</div>
+  <div class="sec-sub" style="margin-bottom:2rem;">8 moduler basert direkte på kompetansemålene i Breddeidrett 1 & 2</div>
+  <div class="mod-grid">
+    <div class="mod-card wide" style="--ac:var(--blue)" data-module="idretter" onclick="nav('idretter')">
+      <div class="mc-top"><div class="mc-icon">🏟️</div><div><div class="mc-label">KM 1 · Allsidighet</div><div class="mc-title">Fordypningsidretter</div></div></div>
+      <div class="mc-desc">Regler, teknikk, taktikk og idrettsspesifikk skadeforebygging i volleyball, badminton, pickleball, tennis og fotball.</div>
+      <div class="mc-chips"><span class="chip">🏐 Volleyball</span><span class="chip">🏸 Badminton</span><span class="chip">🥒 Pickleball</span><span class="chip">🎾 Tennis</span><span class="chip">⚽ Fotball</span></div>
+      <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--teal))"></div></div>
+    </div>
+    <div class="mod-card" style="--ac:var(--yellow)" data-module="trening" onclick="nav('trening')">
+      <div class="mc-top"><div class="mc-icon">⚡</div><div><div class="mc-label">KM 2 · Basistrening</div><div class="mc-title">Treningslære & fysiologi</div></div></div>
+      <div class="mc-desc">Energisystemer, muskelfibertyper, superkompensasjon, treningsprinsipper, styrke og utholdenhet.</div>
+      <div class="mc-chips"><span class="chip">Energisystemer</span><span class="chip">Superkompensasjon</span><span class="chip">Muskelfibertyper</span></div>
+      <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="mod-card" style="--ac:var(--orange)" data-module="oektplan" onclick="nav('oektplan')">
+      <div class="mc-top"><div class="mc-icon">📋</div><div><div class="mc-label">KM 2 · Planlegging</div><div class="mc-title">Øktplanlegging</div></div></div>
+      <div class="mc-desc">Lær å bygge opp en god økt fra bunn. Mal, eksempel og forståelse for hvorfor øktstrukturen er kritisk.</div>
+      <div class="mc-chips"><span class="chip">Oppvarming</span><span class="chip">Hoveddel</span><span class="chip">Nedkjøling</span></div>
+      <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="mod-card" style="--ac:var(--red)" data-module="helse" onclick="toast('Trening og helse – kommer snart!')">
+      <div class="mc-top"><div class="mc-icon">❤️</div><div><div class="mc-label">KM 4–5 · Helse</div><div class="mc-title">Trening og helse</div></div></div>
+      <div class="mc-desc">Hormoner, immunsystem, beintetthet og mental helse. Forstå kroppen din.</div>
+      <div class="mc-chips"><span class="chip">Hormoner</span><span class="chip">Psykisk helse</span><span class="chip">Livsstil</span></div>
+      <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--red),var(--orange))"></div></div>
+    </div>
+    <div class="mod-card" style="--ac:var(--purple)" data-module="samhandling" onclick="toast('Samhandling og relasjoner – kommer snart!')">
+      <div class="mc-top"><div class="mc-icon">🤝</div><div><div class="mc-label">KM 6–7 · Samhandling</div><div class="mc-title">Samhandling & relasjoner</div></div></div>
+      <div class="mc-desc">Tuckman-modellen, psykologisk trygghet, motivasjon og fair play.</div>
+      <div class="mc-chips"><span class="chip">Gruppedynamikk</span><span class="chip">Ledelse</span><span class="chip">Motivasjon</span></div>
+      <div class="prog-bar"><div class="prog-fill mod-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--blue))"></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== IDRETTER ===== -->
+<div id="page-idretter" class="page">
+<div class="container">
+  <div id="sport-list-view">
+    <div class="eyebrow" style="margin-top:0.5rem;">KM 1 · Allsidighet og aktiviteter</div>
+    <div class="sec-title" style="margin-bottom:0.3rem;">Fordypningsidretter</div>
+    <div class="sec-sub" style="margin-bottom:2rem;">Velg en idrett for å lære regler, teknikk, taktikk og idrettsspesifikk fysiologi</div>
+    <div class="sport-grid">
+      <div class="sport-card" style="--sc:var(--blue)" data-sport="volleyball" onclick="openSport('volleyball')">
+        <span class="sc-emoji">🏐</span><div class="sc-title">Volleyball</div>
+        <div class="sc-sub">6 mot 6 · Serve, mottak, sett og spiker · Energisystem: alaktatt</div>
+        <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.9rem;"><span class="chip">Regler</span><span class="chip">Teknikk</span><span class="chip">Taktikk</span><span class="chip">Fun-fakta</span><span class="chip">Quiz</span></div>
+        <div class="prog-row"><span>Progresjon</span><span class="sport-prog-pct">0%</span></div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--teal))"></div></div>
+      </div>
+      <div class="sport-card" style="--sc:var(--green)" data-sport="badminton" onclick="openSport('badminton')">
+        <span class="sc-emoji">🏸</span><div class="sc-title">Badminton</div>
+        <div class="sc-sub">Singel & dobbel · Raskeste ball i sport: 490 km/t · Anaerob/aerob mix</div>
+        <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.9rem;"><span class="chip">Regler</span><span class="chip">Teknikk</span><span class="chip">Taktikk</span><span class="chip">Fun-fakta</span><span class="chip">Quiz</span></div>
+        <div class="prog-row"><span>Progresjon</span><span class="sport-prog-pct">0%</span></div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--green),var(--teal))"></div></div>
+      </div>
+      <div class="sport-card" style="--sc:var(--teal)" data-sport="pickleball" onclick="openSport('pickleball')">
+        <span class="sc-emoji">🥒</span><div class="sc-title">Pickleball</div>
+        <div class="sc-sub">Verdens raskest voksende idrett · Tennis + badminton + bordtennis</div>
+        <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.9rem;"><span class="chip">Regler</span><span class="chip">Teknikk</span><span class="chip">Taktikk</span><span class="chip">Fun-fakta</span><span class="chip">Quiz</span></div>
+        <div class="prog-row"><span>Progresjon</span><span class="sport-prog-pct">0%</span></div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--teal),var(--green))"></div></div>
+      </div>
+      <div class="sport-card" style="--sc:var(--yellow)" data-sport="tennis" onclick="openSport('tennis')">
+        <span class="sc-emoji">🎾</span><div class="sc-title">Tennis</div>
+        <div class="sc-sub">Singel & dobbel · Forehand, backhand, serve · Aerob base + eksplosivitet</div>
+        <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.9rem;"><span class="chip">Regler</span><span class="chip">Teknikk</span><span class="chip">Taktikk</span><span class="chip">Fun-fakta</span><span class="chip">Quiz</span></div>
+        <div class="prog-row"><span>Progresjon</span><span class="sport-prog-pct">0%</span></div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%"></div></div>
+      </div>
+      <div class="sport-card" style="--sc:var(--orange)" data-sport="fotball" onclick="openSport('fotball')">
+        <span class="sc-emoji">⚽</span><div class="sc-title">Fotball</div>
+        <div class="sc-sub">Verdens mest populære idrett · 250 mill. spillere · 10–13 km per kamp</div>
+        <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.9rem;"><span class="chip">Regler</span><span class="chip">Teknikk</span><span class="chip">Taktikk</span><span class="chip">Fun-fakta</span><span class="chip">Quiz</span></div>
+        <div class="prog-row"><span>Progresjon</span><span class="sport-prog-pct">0%</span></div>
+        <div class="prog-bar"><div class="prog-fill sport-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--orange),var(--yellow))"></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="sport-detail-view" style="display:none;"></div>
+</div>
+</div>
+
+<!-- ===== TRENING ===== -->
+<div id="page-trening" class="page">
+<div class="container">
+  <div class="eyebrow" style="margin-top:0.5rem;">KM 2 · Basistrening og metoder</div>
+  <div class="sec-title" style="margin-bottom:0.3rem;">Treningslære & fysiologi</div>
+  <div class="sec-sub" style="margin-bottom:1.5rem;">Fra celle til prestasjon – forstå hva som skjer inne i kroppen når du trener</div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('energi',this)">Energisystemer</button>
+    <button class="tab-btn" onclick="switchTab('superkomp',this)">Superkompensasjon</button>
+    <button class="tab-btn" onclick="switchTab('muskler',this)">Muskler & fibertyper</button>
+    <button class="tab-btn" onclick="switchTab('prinsipper',this)">Treningsprinsipper</button>
+    <button class="tab-btn" onclick="switchTab('oevelser',this)">Styrke & utholdenhet</button>
+  </div>
+
+  <!-- ENERGISYSTEMER -->
+  <div id="tab-energi" class="tab-content active">
+    <div class="content-block" style="--ac:var(--yellow)">
+      <div class="cb-title">⚡ De tre energisystemene</div>
+      <p style="font-size:0.87rem;color:var(--muted2);line-height:1.65;margin-bottom:1rem;">
+        Kroppen kan ikke lagre store mengder energi klar til bruk. Alt muskelarbeid drives av molekylet <strong style="color:var(--text)">ATP (adenosintrifosfat)</strong> – kroppens "energivaluta". Når ATP brukes opp, dannes ADP. Kroppen har tre systemer for å "lade opp" ATP igjen, og de aktiveres avhengig av intensitet og varighet.
+      </p>
+      <div class="energy-bars">
+        <div class="energy-bar-item" style="border-color:rgba(240,224,64,0.3)">
+          <div class="ebar-icon">⚡</div>
+          <div class="ebar-title" style="color:var(--yellow)">Alaktatt system</div>
+          <div class="ebar-sub">ATP-PC systemet · Ingen oksygen · Ingen melkesyre</div>
+          <div class="ebar-time" style="color:var(--yellow)">0–10 sek</div>
+          <div class="ebar-time-lbl">Varighet</div>
+          <div class="ebar-sport">Volleyball-spiker · Hopp · Sprint · Kastebevegelser</div>
+        </div>
+        <div class="energy-bar-item" style="border-color:rgba(255,140,66,0.3)">
+          <div class="ebar-icon">🔥</div>
+          <div class="ebar-title" style="color:var(--orange)">Laktatt system</div>
+          <div class="ebar-sub">Anaerob glykolyse · Melkesyre dannes · Uten oksygen</div>
+          <div class="ebar-time" style="color:var(--orange)">10–120 sek</div>
+          <div class="ebar-time-lbl">Varighet</div>
+          <div class="ebar-sport">Badminton-rallye · 400 m løp · Intensiv intervall</div>
+        </div>
+        <div class="energy-bar-item" style="border-color:rgba(61,232,160,0.3)">
+          <div class="ebar-icon">🫁</div>
+          <div class="ebar-title" style="color:var(--green)">Aerob system</div>
+          <div class="ebar-sub">Med oksygen · Svært effektivt · Fett og glukose</div>
+          <div class="ebar-time" style="color:var(--green)">&gt;2 min</div>
+          <div class="ebar-time-lbl">Varighet</div>
+          <div class="ebar-sport">Fotball-kamp · Langløp · Tennis-kamp</div>
+        </div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">💡 Viktig poeng</div>
+        <div class="info-text">De tre systemene jobber <strong>alltid samtidig</strong> – det er intensiteten som bestemmer hvilke som dominerer. En volleyball-kamp bruker primært det alaktate systemet per rallye, men det aerobe systemet er avgjørende for restitusjon mellom poengene.</div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta – ATP</div>
+      <div class="fun-fact-text">Kroppen din inneholder til enhver tid bare <strong>ca. 250 gram ATP</strong> – nok til omtrent 2 sekunders maksimal aktivitet. Men du kan regenerere og bruke din egen kroppsvekt i ATP i løpet av én treningsøkt. ATP er ikke et energilager – det er et lynraskt energi-stafettlag!</div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta – Melkesyre</div>
+      <div class="fun-fact-text"><strong>Melkesyre er IKKE årsaken til muskelømhet!</strong> Melkesyre (laktat) er borte fra musklene innen 30–60 minutter etter trening. Ømheten som kommer 24–48 timer etter (DOMS) skyldes mikroskopiske rifter i muskelvevet – og det er disse riftene som heles sterkere enn før.</div>
+    </div>
+    <div class="quiz-block">
+      <div class="quiz-block-title">🧠 Test deg selv – Energisystemer</div>
+      <div class="quiz-block-sub">KM 2 · +25 XP</div>
+      <div class="qb-question">En volleyball-spiker hopper og slår ballen. Hvilket energisystem dominerer i dette øyeblikket?</div>
+      <div class="qb-opts" id="qe1-opts">
+        <button class="qb-opt" onclick="qb('qe1',0,0,'Det alaktate systemet (ATP-PC) dominerer ved all aktivitet under ca. 10 sekunder. En spiker tar 1–3 sekunder – typisk alaktatt. Det aerobe systemet er for langsom til å hjelpe i akkurat dette øyeblikket, men det er kritisk for å restituere PC-lagrene mellom poengene.')"><div class="qb-letter">A</div>Alaktatt – ATP-PC systemet</button>
+        <button class="qb-opt" onclick="qb('qe1',1,0,'Det alaktate systemet (ATP-PC) dominerer ved all aktivitet under ca. 10 sekunder. En spiker tar 1–3 sekunder – typisk alaktatt.')"><div class="qb-letter">B</div>Laktatt – anaerob glykolyse</button>
+        <button class="qb-opt" onclick="qb('qe1',2,0,'Det alaktate systemet (ATP-PC) dominerer ved all aktivitet under ca. 10 sekunder. Det aerobe systemet er altfor langsomt for et eksplosivt øyeblikk.')"><div class="qb-letter">C</div>Aerob – med oksygen</button>
+      </div>
+      <div class="qb-feedback" id="qe1-fb"></div>
+    </div>
+  </div>
+
+  <!-- SUPERKOMPENSASJON -->
+  <div id="tab-superkomp" class="tab-content">
+    <div class="content-block" style="--ac:var(--green)">
+      <div class="cb-title">📈 Superkompensasjon – Hvorfor trening virker</div>
+      <p style="font-size:0.87rem;color:var(--muted2);line-height:1.65;margin-bottom:1rem;">
+        Superkompensasjon er den grunnleggende biologiske mekanismen bak all fremgang i trening. Den forklarer <em>hvorfor</em> kroppen blir bedre – og <em>hvorfor</em> timing mellom treningsøkter er kritisk.
+      </p>
+      <div class="superkomp-visual">
+        <svg class="sk-svg" viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="skGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#f0e040;stop-opacity:1"/>
+              <stop offset="40%" style="stop-color:#ff5f5f;stop-opacity:1"/>
+              <stop offset="65%" style="stop-color:#3de8a0;stop-opacity:1"/>
+              <stop offset="85%" style="stop-color:#f0e040;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#9494a0;stop-opacity:1"/>
+            </linearGradient>
+          </defs>
+          <!-- Baseline -->
+          <line x1="20" y1="85" x2="580" y2="85" stroke="#2c2c34" stroke-width="1" stroke-dasharray="4,4"/>
+          <text x="15" y="89" fill="#72727d" font-size="10" font-family="DM Sans">Utgangs-nivå</text>
+          <!-- Curve -->
+          <path d="M 80 85 L 130 85 C 140 85 145 90 150 105 C 155 120 160 125 175 115 C 190 105 200 88 220 72 C 240 56 260 52 290 55 C 320 58 340 68 370 85 C 400 102 420 102 450 85" fill="none" stroke="url(#skGrad)" stroke-width="3" stroke-linecap="round"/>
+          <!-- Phase labels -->
+          <text x="80" y="145" fill="#72727d" font-size="9" font-family="DM Sans" text-anchor="middle">Trening</text>
+          <text x="160" y="145" fill="#ff5f5f" font-size="9" font-family="DM Sans" text-anchor="middle">Utmattelse</text>
+          <text x="260" y="145" fill="#3de8a0" font-size="9" font-family="DM Sans" text-anchor="middle">Superkomp.</text>
+          <text x="380" y="145" fill="#9494a0" font-size="9" font-family="DM Sans" text-anchor="middle">Tilbake til basis</text>
+          <!-- Vertical markers -->
+          <line x1="130" y1="85" x2="130" y2="130" stroke="#2c2c34" stroke-width="1"/>
+          <line x1="200" y1="85" x2="200" y2="130" stroke="#2c2c34" stroke-width="1"/>
+          <line x1="320" y1="55" x2="320" y2="130" stroke="#3de8a0" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+          <!-- Arrow + label for optimal window -->
+          <text x="290" y="44" fill="#3de8a0" font-size="10" font-family="DM Sans" text-anchor="middle">OPTIMALT TRENINGSVINDU</text>
+          <line x1="230" y1="48" x2="365" y2="48" stroke="#3de8a0" stroke-width="1"/>
+          <polygon points="365,44 373,48 365,52" fill="#3de8a0"/>
+          <polygon points="230,44 222,48 230,52" fill="#3de8a0"/>
+        </svg>
+        <div class="sk-legend">
+          <div class="sk-legend-item"><div class="sk-dot" style="background:var(--yellow)"></div>Normalytelse</div>
+          <div class="sk-legend-item"><div class="sk-dot" style="background:var(--red)"></div>Utmattelse / nedbryting</div>
+          <div class="sk-legend-item"><div class="sk-dot" style="background:var(--green)"></div>Superkompensasjon (høyere enn utgangspunkt)</div>
+          <div class="sk-legend-item"><div class="sk-dot" style="background:var(--muted)"></div>Tilbake til basis (hvis ikke re-stimulert)</div>
+        </div>
+      </div>
+      <ul class="cb-list">
+        <li><span class="cb-term">Fase 1: Trening</span>Belastningen bryter ned muskelfibre, tømmer glykogenlagre og skaper stress i kroppen (katabolisme). Ytelsesnivået faller under treningsøkten.</li>
+        <li><span class="cb-term">Fase 2: Utmattelse</span>Rett etter trening er kroppen på sitt laveste. Musklene er skadet og energilagrene er tomme. Nå er hvile avgjørende.</li>
+        <li><span class="cb-term">Fase 3: Restitusjon</span>Kroppen reparerer seg – og bygger seg litt sterkere enn utgangspunktet (anabolisme). Veksthormon frigjøres primært under dyp søvn.</li>
+        <li><span class="cb-term">Fase 4: Superkomp.</span>Kroppen er nå sterkere, raskere eller mer utholdende enn før treningen. Dette er vinduet der du bør trene igjen for å bygge videre.</li>
+        <li><span class="cb-term">Fase 5: Tilbake</span>Trener du for sent, mister du fremgangen. Trener du for tidlig (fase 2), starter du fra et lavere utgangspunkt = overtrening.</li>
+      </ul>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta</div>
+      <div class="fun-fact-text">Astronauter på ISS trener <strong>2 timer hver eneste dag</strong> for å motvirke muskeltap i nullgravitasjon – og mister likevel 20–30 % av muskelmassen på en 6-måneders tur. Superkompensasjon krever gravitasjonell belastning – noe rommet ikke gir.</div>
+    </div>
+    <div class="myth-box">
+      <div class="myth-label">⚠ Vanlig misforståelse</div>
+      <div class="myth-myth">Myte: "Trener du hver dag, blir du raskest god."</div>
+      <div class="myth-truth">Sannhet: <strong>Fremgang skjer i hvilen, ikke under selve treningen.</strong> Uten tilstrekkelig restitusjon starter hver økt på et lavere nivå enn den forrige. Strategisk hvile er ikke latskap – det er en del av treningsprogrammet.</div>
+    </div>
+    <div class="quiz-block">
+      <div class="quiz-block-title">🧠 Test deg selv – Superkompensasjon</div>
+      <div class="quiz-block-sub">KM 2 · +25 XP</div>
+      <div class="qb-question">Hva er den beste beskrivelsen av superkompensasjonsfasen?</div>
+      <div class="qb-opts" id="qsk1-opts">
+        <button class="qb-opt" onclick="qb('qsk1',0,2,'Superkompensasjonsfasen er fasen ETTER restitusjon – der kroppen er sterkere enn før treningsøkten. Dette er det optimale vinduet for neste økt.')"><div class="qb-letter">A</div>Fasen der kroppen er på sitt svakeste</button>
+        <button class="qb-opt" onclick="qb('qsk1',1,2,'Det er riktig at trening bryter ned muskler, men selve superkompensasjon beskriver perioden der kroppen er sterkere enn utgangspunktet.')"><div class="qb-letter">B</div>Fasen der muskler brytes ned</button>
+        <button class="qb-opt" onclick="qb('qsk1',2,2,'Riktig! Superkompensasjon er perioden der kroppen er sterkere, raskere eller mer utholdende enn før treningen. Trener du i dette vinduet, bygger du videre. Venter du for lenge, er gevinsten borte.')"><div class="qb-letter">C</div>Fasen der kroppen er sterkere enn utgangspunktet</button>
+      </div>
+      <div class="qb-feedback" id="qsk1-fb"></div>
+    </div>
+  </div>
+
+  <!-- MUSKELFIBERTYPER -->
+  <div id="tab-muskler" class="tab-content">
+    <div class="content-block" style="--ac:var(--orange)">
+      <div class="cb-title">💪 Muskelfibertyper – Type I og Type II</div>
+      <p style="font-size:0.87rem;color:var(--muted2);line-height:1.65;margin-bottom:1rem;">
+        Skjelettmuskler inneholder to hovedtyper fibre med svært ulike egenskaper. Forholdet mellom dem bestemmes delvis genetisk – men begge kan trenes!
+      </p>
+      <div class="fiber-grid">
+        <div class="fiber-card" style="border-color:rgba(61,232,160,0.3)">
+          <div class="fiber-title" style="color:var(--green)">Type I – Langsomme fibre 🏃</div>
+          <div class="fiber-row"><span class="fiber-key">Kalles</span><span class="fiber-val">"Røde fibre"</span></div>
+          <div class="fiber-row"><span class="fiber-key">Energisystem</span><span class="fiber-val">Aerob</span></div>
+          <div class="fiber-row"><span class="fiber-key">Kraft</span><span class="fiber-val">Lav</span></div>
+          <div class="fiber-row"><span class="fiber-key">Utholdenhet</span><span class="fiber-val">Svært høy</span></div>
+          <div class="fiber-row"><span class="fiber-key">Tretthet</span><span class="fiber-val">Sakte</span></div>
+          <div class="fiber-row"><span class="fiber-key">Typiske idretter</span><span class="fiber-val">Langrenn, maraton, sykling</span></div>
+        </div>
+        <div class="fiber-card" style="border-color:rgba(255,140,66,0.3)">
+          <div class="fiber-title" style="color:var(--orange)">Type II – Raske fibre ⚡</div>
+          <div class="fiber-row"><span class="fiber-key">Kalles</span><span class="fiber-val">"Hvite fibre"</span></div>
+          <div class="fiber-row"><span class="fiber-key">Energisystem</span><span class="fiber-val">Anaerob</span></div>
+          <div class="fiber-row"><span class="fiber-key">Kraft</span><span class="fiber-val">Svært høy</span></div>
+          <div class="fiber-row"><span class="fiber-key">Utholdenhet</span><span class="fiber-val">Lav</span></div>
+          <div class="fiber-row"><span class="fiber-key">Tretthet</span><span class="fiber-val">Raskt</span></div>
+          <div class="fiber-row"><span class="fiber-key">Typiske idretter</span><span class="fiber-val">Sprint, hopp, kast, volleyball</span></div>
+        </div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">💡 Dine fordypningsidretter</div>
+        <div class="info-text"><strong>Volleyball, badminton og pickleball</strong> er dominert av Type II (eksplosive bevegelser, korte rallyer). <strong>Fotball og tennis</strong> krever begge – Type II for sprinter og slag, Type I for å holde ut hele kampen.</div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta – Muskelfibertyper</div>
+      <div class="fun-fact-text">Usain Bolt har estimert <strong>~80 % Type II-fibre</strong> i lårmuskulaturen. Norske langrennsutøvere som Therese Johaug har <strong>~80 % Type I</strong>. Du er langt på vei "født" med din fordeling – men trening kan utvikle begge typer betydelig.</div>
+    </div>
+    <div class="myth-box">
+      <div class="myth-label">⚠ Vanlig misforståelse</div>
+      <div class="myth-myth">Myte: "Styrketrening gjør deg stor og tung."</div>
+      <div class="myth-truth">Sannhet: <strong>Å bygge merkbar muskelmasse krever kalorioverskudd + mye protein + måneder med konsekvent trening.</strong> For de fleste ungdommer vil styrketrening primært øke styrke og eksplosivitet, ikke kroppsstørrelse. Og mer Type II-aktivitet = bedre prestasjon i alle fem idrettene dere driver med.</div>
+    </div>
+    <div class="quiz-block">
+      <div class="quiz-block-title">🧠 Test deg selv – Muskelfibertyper</div>
+      <div class="quiz-block-sub">KM 2 · +25 XP</div>
+      <div class="qb-question">Hvilken muskelfibretype dominerer hos en langrennsspesialist?</div>
+      <div class="qb-opts" id="qmf1-opts">
+        <button class="qb-opt" onclick="qb('qmf1',0,0,'Type I (langsomme/røde fibre) er perfekt for utholdenhetsidretter som langrenn. De er motstandsdyktige mot tretthet og drives av det aerobe systemet.')"><div class="qb-letter">A</div>Type I – langsomme (røde) fibre</button>
+        <button class="qb-opt" onclick="qb('qmf1',1,0,'Type II-fibre er kraftige og raske, men trettes raskt. Det gjør dem lite egnet for en lang langrennsdistanse.')"><div class="qb-letter">B</div>Type II – raske (hvite) fibre</button>
+        <button class="qb-opt" onclick="qb('qmf1',2,0,'Alle muskler inneholder begge typer, men forholdet varierer. Langrennsspesialister har typisk svært høy andel Type I-fibre.')"><div class="qb-letter">C</div>Like mye av begge</button>
+      </div>
+      <div class="qb-feedback" id="qmf1-fb"></div>
+    </div>
+  </div>
+
+  <!-- TRENINGSPRINSIPPER -->
+  <div id="tab-prinsipper" class="tab-content">
+    <div class="principle-card">
+      <div class="principle-icon">📈</div>
+      <div>
+        <div class="principle-title">Overload-prinsippet</div>
+        <div class="principle-desc">For at kroppen skal bli bedre, må den utsettes for en belastning som er litt høyere enn den er vant til. Kombinert med superkompensasjon gir dette fremgang.</div>
+        <div class="principle-ex"><strong>Eksempel:</strong> Du klarer 3×10 med 60 kg. Neste uke øker du til 62,5 kg. Kroppen tilpasser seg og blir sterkere.</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">🎯</div>
+      <div>
+        <div class="principle-title">Spesifisitetsprinsippet</div>
+        <div class="principle-desc">Kroppen tilpasser seg akkurat den typen trening du gjør. Vil du bli bedre i volleyball, må du trene volleyballbevegelser. Kondisjon alene gjør deg ikke bedre til å sette – du må øve setten.</div>
+        <div class="principle-ex"><strong>Eksempel:</strong> En volleyballspiller trener eksplosive hopp og raske retningsskift – ikke bare langkjøring.</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">🔄</div>
+      <div>
+        <div class="principle-title">Restitusjonsprinsippet</div>
+        <div class="principle-desc">Fremgang skjer under hvile, ikke under trening. Søvn er den viktigste restitusjonsmekanismen – veksthormon frigjøres primært under dyp søvn.</div>
+        <div class="principle-ex"><strong>Eksempel:</strong> Under 7 timers søvn gir dokumentert svakere muskelvekst og dårligere restitusjon ifølge forskning.</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">📉</div>
+      <div>
+        <div class="principle-title">Reversibilitetsprinsippet</div>
+        <div class="principle-desc">"Use it or lose it." Tilpasninger forsvinner dersom treningen stopper. Det tar kortere tid å miste form enn å bygge den opp.</div>
+        <div class="principle-ex"><strong>Eksempel:</strong> Etter 2–3 uker uten utholdenhetstrening begynner kondisjonen å dale merkbart. Muskelmasse tar litt lenger tid å miste.</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">📊</div>
+      <div>
+        <div class="principle-title">FITT-prinsippet</div>
+        <div class="principle-desc">Fire variabler du styrer for å tilpasse treningsbelastningen. Endre én variabel om gangen for å unngå overtrening.</div>
+        <div class="principle-ex"><strong>F</strong>rekvens – Hvor ofte? · <strong>I</strong>ntensitet – Hvor hardt? · <strong>T</strong>id – Hvor lenge? · <strong>T</strong>ype – Hva slags?</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">🗓️</div>
+      <div>
+        <div class="principle-title">Periodisering</div>
+        <div class="principle-desc">Strukturert planlegging over tid. Makro (år) → Meso (måneder) → Mikro (uker). Hindrer overtrening og sikrer topp form til riktig tidspunkt.</div>
+        <div class="principle-ex"><strong>Eksempel:</strong> Høst = bygge grunnform (lavt volum høy) → Vinter = øke intensitet → Vår = topp form til sesong.</div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta – Søvn og trening</div>
+      <div class="fun-fact-text">En studie av basketballspillere ved Stanford University viste at de som økte søvnen til 10 timer per natt forbedret trepoentsskudd-presisjon med <strong>9 %</strong>, sprintfart med <strong>5 %</strong> og reduserte reaksjonstid – uten noen annen endring i treningsprogrammet.</div>
+    </div>
+  </div>
+
+  <!-- STYRKE OG UTHOLDENHET -->
+  <div id="tab-oevelser" class="tab-content">
+    <div class="content-block" style="--ac:var(--yellow)">
+      <div class="cb-title">💪 Styrkeøvelser</div>
+      <table class="ex-table">
+        <thead><tr><th>Øvelse</th><th>Muskelgruppe</th><th>Sett × reps</th><th>Viktig teknikk-tips</th></tr></thead>
+        <tbody>
+          <tr><td><div class="ex-name">Knebøy</div><div class="ex-muscle">Bein / basisøvelse</div></td><td>Quadriceps, gluteus, hamstrings</td><td>3 × 8–12</td><td>Rygg rett, knær over tær, vekt på hele foten</td></tr>
+          <tr><td><div class="ex-name">Markløft</div><div class="ex-muscle">Helkropp / basisøvelse</div></td><td>Bakside lår, rygg, gluteus</td><td>3 × 6–8</td><td>Nøytral rygg, trekk stangen langs benet</td></tr>
+          <tr><td><div class="ex-name">Benkpress</div><div class="ex-muscle">Overkropp / press</div></td><td>Bryst, skulder, triceps</td><td>3 × 8–12</td><td>Skulderblad tilbake og ned, kontrollert ned</td></tr>
+          <tr><td><div class="ex-name">Pullups / Lat pulldown</div><div class="ex-muscle">Rygg / trekk</div></td><td>Latissimus, biceps</td><td>3 × 8–10</td><td>Trekk albuene ned mot hoftene</td></tr>
+          <tr><td><div class="ex-name">Utfall</div><div class="ex-muscle">Bein / ensidige</div></td><td>Quadriceps, gluteus, balanse</td><td>3 × 10/bein</td><td>Fremre kne 90°, bakre kne mot gulv</td></tr>
+          <tr><td><div class="ex-name">Nordic Hamstring</div><div class="ex-muscle">Bakside lår / skadeforebygging</div></td><td>Hamstrings (eksentrisk)</td><td>3 × 5–8</td><td>Senk sakte – eksentrisk kontraksjon er nøkkelen</td></tr>
+          <tr><td><div class="ex-name">Planke</div><div class="ex-muscle">Core / stabilitet</div></td><td>Magemuskulatur, ryggrad</td><td>3 × 30–60 sek</td><td>Rett linje hode–hæl, ikke la hoftene synke</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content-block" style="--ac:var(--green)">
+      <div class="cb-title">🫀 Pulssoner – utholdenhetstrening</div>
+      <ul class="cb-list">
+        <li><span class="cb-term">Sone 1 (50–60 %)</span>Aktiv hvile og restitusjon. Lett gåtur etter hardt spill. Fjerner avfallsstoffer fra muskler.</li>
+        <li><span class="cb-term">Sone 2 (60–70 %)</span>Aerob grunntrening – "komfortabelt å snakke". Bygger kondisjonsfundament. Viktigste sonen for langvarig helse.</li>
+        <li><span class="cb-term">Sone 3 (70–80 %)</span>Tempotrening. Noe tung å snakke. Øker aerob kapasitet. 20–40 min varighet.</li>
+        <li><span class="cb-term">Sone 4 (80–90 %)</span>Terskeltrening. Hever laktatterskelen – avgjørende for prestasjon i fotball og tennis.</li>
+        <li><span class="cb-term">Sone 5 (90–100 %)</span>Maks intensitet. Intervaller 30 sek – 4 min. Øker VO₂maks. Krev god restitusjon etterpå.</li>
+      </ul>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta – VO₂maks</div>
+      <div class="fun-fact-text">Gjennomsnittlig norsk 16-åring har en VO₂maks på ca. 45–50 ml/kg/min. Langrennsstjerner som Johannes Høsflot Klæbo måler over <strong>90 ml/kg/min</strong> – nesten det dobbelte. VO₂maks er det viktigste enkeltmålet for kondisjon og kan økes med 10–15 % med riktig trening.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== ØKTPLAN ===== -->
+<div id="page-oektplan" class="page">
+<div class="container">
+  <div class="eyebrow" style="margin-top:0.5rem;">KM 2 · Basistrening og planlegging</div>
+  <div class="sec-title" style="margin-bottom:0.3rem;">Øktplanlegging</div>
+  <div class="sec-sub" style="margin-bottom:1.5rem;">Lær strukturen – forstå hvorfor den eksisterer</div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('okt-hvorfor',this)">Hvorfor øktplan?</button>
+    <button class="tab-btn" onclick="switchTab('okt-struktur',this)">Øktens struktur</button>
+    <button class="tab-btn" onclick="switchTab('okt-eksempel',this)">Ferdig eksempel</button>
+    <button class="tab-btn" onclick="switchTab('okt-mal',this)">Din øktmal</button>
+  </div>
+
+  <!-- HVORFOR -->
+  <div id="tab-okt-hvorfor" class="tab-content active">
+    <div class="content-block" style="--ac:var(--orange)">
+      <div class="cb-title">📋 Hvorfor er øktplanlegging en viktig kompetanse?</div>
+      <p style="font-size:0.87rem;color:var(--muted2);line-height:1.65;margin-bottom:1.2rem;">
+        En øktplan er ikke bare et skjema – det er beviset på at du forstår treningslæren du har lært. En godt strukturert økt er <strong style="color:var(--text)">sikrere, mer effektiv og mer lærerik</strong> enn en ustrukturert økt.
+      </p>
+      <div class="okt-why-box">
+        <div class="okt-why-title">Kompetansen du viser med en god øktplan</div>
+        <ul class="okt-why-list">
+          <li>Du forstår hvordan kroppen fungerer fysiologisk (superkompensasjon, energisystemer)</li>
+          <li>Du kan koble treningsprinsipper til praktisk gjennomføring</li>
+          <li>Du tar hensyn til skadeforebygging – ikke bare prestasjon</li>
+          <li>Du kan tilpasse treningen til en spesifikk idrett eller et spesifikt mål</li>
+          <li>Du kan kommunisere og lede andre gjennom en treningsøkt</li>
+          <li>Du reflekterer over hva som fungerte og hva som kan forbedres</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Fun-fakta – Profesjonell praksis</div>
+      <div class="fun-fact-text">Alle profesjonelle idrettslag i verden bruker detaljerte øktplaner. Real Madrid, det norske fotballandslaget og Team Ineos (sykling) har dedikerte planner-team som bruker timer på å designe én enkelt treningsøkt. <strong>Kompetansen du lærer nå, er den samme som proffene bruker.</strong></div>
+    </div>
+    <div class="myth-box">
+      <div class="myth-label">⚠ Vanlig misforståelse</div>
+      <div class="myth-myth">Myte: "Bare hopp rett i aktiviteten – planlegging er sløsing med tid."</div>
+      <div class="myth-truth">Sannhet: <strong>Ustrukturert trening uten oppvarming er den viktigste årsaken til akutte idrettsskader.</strong> En 10-minutters oppvarming kan halvere risikoen for muskelskader. Det er ikke tid bortkastet – det er investering.</div>
+    </div>
+  </div>
+
+  <!-- STRUKTUR -->
+  <div id="tab-okt-struktur" class="tab-content">
+    <div class="okt-phase" style="border-color:rgba(240,224,64,0.3)">
+      <div class="okt-phase-header">
+        <div class="okt-phase-icon">🔥</div>
+        <div>
+          <div class="okt-phase-title">Del 1: Oppvarming</div>
+          <div style="font-size:0.78rem;color:var(--muted2);">Generell + spesiell oppvarming</div>
+        </div>
+        <div class="okt-phase-time" style="background:rgba(240,224,64,0.12);color:var(--yellow);border:1px solid rgba(240,224,64,0.25);">10–15 min</div>
+      </div>
+      <div class="okt-phase-body">
+        <div style="margin-bottom:1rem;">
+          <div style="font-weight:700;font-size:0.88rem;margin-bottom:0.5rem;">Generell oppvarming (5–8 min)</div>
+          <ul class="okt-why-list">
+            <li>Øker kroppstemperaturen – musklene blir mer elastiske og bevegelige</li>
+            <li>Øker hjertefrekvens og blodsirkulasjon til muskulaturen</li>
+            <li>Aktiverer nervesystemet – bedre reaksjonstid og koordinasjon</li>
+            <li>Typisk: rolig jogg, høye kneløft, hælspark, armssirkler</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:0.88rem;margin-bottom:0.5rem;">Spesiell oppvarming (5–7 min)</div>
+          <ul class="okt-why-list">
+            <li>Aktiverer de musklene og bevegelsesmønstrene som brukes i hoveddelen</li>
+            <li>Øver tekniske elementer i lavt tempo – "primer" nervesystemet</li>
+            <li>Volleyball: fingeraktivering, skulderrotasjon, hoppøvelser</li>
+            <li>Fotball: pasningsveggen, retningsskift, dynamisk tøying</li>
+          </ul>
+        </div>
+        <div class="info-box" style="margin-top:0.8rem;">
+          <div class="info-label">💡 Fysiologisk forklaring</div>
+          <div class="info-text">Muskeltemperaturen bør opp fra 37°C til ca. <strong>38,5°C</strong> for optimal kraft og koordinasjon. Varm muskel = raskere nerveledningshastighet = bedre prestasjon OG lavere skaderisiko.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="okt-phase" style="border-color:rgba(91,159,255,0.3)">
+      <div class="okt-phase-header">
+        <div class="okt-phase-icon">⚡</div>
+        <div>
+          <div class="okt-phase-title">Del 2: Hoveddel</div>
+          <div style="font-size:0.78rem;color:var(--muted2);">Øktens kjerne – må støtte øktens mål</div>
+        </div>
+        <div class="okt-phase-time" style="background:rgba(91,159,255,0.12);color:var(--blue);border:1px solid rgba(91,159,255,0.25);">25–40 min</div>
+      </div>
+      <div class="okt-phase-body">
+        <ul class="okt-why-list">
+          <li>Utgjør 50–75 % av total treningstid</li>
+          <li>Innholdet styres av øktens mål (teknikk, kondisjon, styrke, spill)</li>
+          <li>Start med det som krever mest presisjon og konsentrasjon (teknikk) før du er sliten</li>
+          <li>Avslutt hoveddelen med kamp/spill som integrerer det du har øvd på</li>
+          <li>Bruk FITT-prinsippet bevisst: juster intensitet og volum underveis</li>
+        </ul>
+        <div class="info-box" style="margin-top:0.8rem;">
+          <div class="info-label">💡 Regel om rekkefølge</div>
+          <div class="info-text"><strong>Teknikktrening → Kondisjon/styrke → Spill/kamp.</strong> Når du er trøtt, lærer du dårligere teknikk. Øv teknikk tidlig i økten, når nervesystemet er friskt.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="okt-phase" style="border-color:rgba(61,232,160,0.3)">
+      <div class="okt-phase-header">
+        <div class="okt-phase-icon">🌀</div>
+        <div>
+          <div class="okt-phase-title">Del 3: Nedkjøling & evaluering</div>
+          <div style="font-size:0.78rem;color:var(--muted2);">Avslutte riktig – starte restitusjonsprosessen</div>
+        </div>
+        <div class="okt-phase-time" style="background:rgba(61,232,160,0.12);color:var(--green);border:1px solid rgba(61,232,160,0.25);">8–12 min</div>
+      </div>
+      <div class="okt-phase-body">
+        <ul class="okt-why-list">
+          <li>Rolig aktivitet senker pulsen gradvis – unngår blodopphoping i beina</li>
+          <li>Statisk tøying (hold 20–30 sek) øker bevegelighet og fjerner spenning</li>
+          <li>Starter restitusjonsprocessen – kroppen begynner å reparere seg</li>
+          <li>Felles evaluering: hva gikk bra? Hva skal vi øve mer på neste gang?</li>
+        </ul>
+        <div class="info-box" style="margin-top:0.8rem;">
+          <div class="info-label">💡 Fysiologisk forklaring</div>
+          <div class="info-text">Under hard trening samler det seg avfallsstoffer (bl.a. laktat) i musklene. Rolig jogg etter trening øker blodstrøm og hjelper kroppen å <strong>skylle ut disse stoffene</strong> – noe som reduserer ømhet neste dag.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EKSEMPEL -->
+  <div id="tab-okt-eksempel" class="tab-content">
+    <div class="okt-header">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.04em;margin-bottom:0.3rem;">Eksempel: Volleyball-økt · Teknikk og spill</div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.82rem;color:var(--muted2);">
+        <span>📅 Varighet: 60 min</span>
+        <span>👥 Gruppe: VG1/VG2 Breddeidrett</span>
+        <span>🎯 Mål: Serve + mottak, avslutte med kamp</span>
+        <span>⚡ Energisystem: Primært alaktatt, aerob restitusjon</span>
+      </div>
+    </div>
+
+    <!-- OPPVARMING -->
+    <div class="okt-phase" style="border-color:rgba(240,224,64,0.3);margin-bottom:0.8rem;">
+      <div class="okt-phase-header">
+        <div class="okt-phase-icon">🔥</div>
+        <div class="okt-phase-title">Oppvarming</div>
+        <div class="okt-phase-time" style="background:rgba(240,224,64,0.12);color:var(--yellow);border:1px solid rgba(240,224,64,0.25);">0–12 min</div>
+      </div>
+      <div class="okt-phase-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin-bottom:0.5rem;">
+          <span>Hva</span><span>Hvordan</span><span>Hvorfor</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+          <div><strong style="color:var(--text)">Generell oppvarming</strong><div style="font-size:0.73rem;color:var(--muted)">5 min</div></div>
+          <div style="color:var(--muted2)">Jogg rundt banen, høye kneløft, hælspark, armssirkler i begge retninger</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Øke kroppstemperatur og blodsirkulasjon. Aktivere store muskelgrupper.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;">
+          <div><strong style="color:var(--text)">Spesiell oppvarming</strong><div style="font-size:0.73rem;color:var(--muted)">7 min</div></div>
+          <div style="color:var(--muted2)">Fingeraktivering (flex/strekk), skuldersirkler, sprettøvelser (50 % intensitet), enkle kast til partner</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Klargjøre fingre, skuldre og ankler for volleyballbevegelser. Aktivere nervebanene.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOVEDDEL -->
+    <div class="okt-phase" style="border-color:rgba(91,159,255,0.3);margin-bottom:0.8rem;">
+      <div class="okt-phase-header">
+        <div class="okt-phase-icon">⚡</div>
+        <div class="okt-phase-title">Hoveddel</div>
+        <div class="okt-phase-time" style="background:rgba(91,159,255,0.12);color:var(--blue);border:1px solid rgba(91,159,255,0.25);">12–52 min</div>
+      </div>
+      <div class="okt-phase-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin-bottom:0.5rem;">
+          <span>Hva</span><span>Hvordan</span><span>Hvorfor</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+          <div><strong style="color:var(--text)">Servetrening</strong><div style="font-size:0.73rem;color:var(--muted)">10 min</div></div>
+          <div style="color:var(--muted2)">5 flytende server + 5 jump-server per elev. Variér plassering: langt, kort, diagonal.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Teknikk mens nervesystemet er friskt. Flytende serve = kontroll, jump serve = press.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+          <div><strong style="color:var(--text)">Mottak-drill</strong><div style="font-size:0.73rem;color:var(--muted)">10 min</div></div>
+          <div style="color:var(--muted2)">Trener sender baller fra nett, 3 spillere i W-formasjon. Bytt etter 10 mottak. Fokus: plattform og retning mot setter.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78ером;">Motorisk innlæring. Repetisjoner bygger automatikk i mottaket – nøkkelen i volleyball.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+          <div><strong style="color:var(--text)">3-touch-drill</strong><div style="font-size:0.73rem;color:var(--muted)">10 min</div></div>
+          <div style="color:var(--muted2)">2 mot 2 over nett: kun mottak–sett–spiker. Ingen ekstra berøringer. Rotér hvert 5. poeng.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Kombinerer alle tre teknikkene i realistisk situasjon.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;">
+          <div><strong style="color:var(--text)">Kamp 6 mot 6</strong><div style="font-size:0.73rem;color:var(--muted)">10 min</div></div>
+          <div style="color:var(--muted2)">To kamp à 10 min. Poengbasert. Bruk det vi har øvd på.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Anvende teknikk og taktikk i ekte kampkontekst. Høy motivasjon.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEDKJØLING -->
+    <div class="okt-phase" style="border-color:rgba(61,232,160,0.3)">
+      <div class="okt-phase-header">
+        <div class="okt-phase-icon">🌀</div>
+        <div class="okt-phase-title">Nedkjøling & evaluering</div>
+        <div class="okt-phase-time" style="background:rgba(61,232,160,0.12);color:var(--green);border:1px solid rgba(61,232,160,0.25);">52–60 min</div>
+      </div>
+      <div class="okt-phase-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin-bottom:0.5rem;">
+          <span>Hva</span><span>Hvordan</span><span>Hvorfor</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+          <div><strong style="color:var(--text)">Rolig jogg</strong><div style="font-size:0.73rem;color:var(--muted)">3 min</div></div>
+          <div style="color:var(--muted2)">Rolig jogg rundt banen. Senk pulsen gradvis til under 120 slag/min.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Skyller ut laktat. Hindrer blodopphoping i beina.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+          <div><strong style="color:var(--text)">Statisk tøying</strong><div style="font-size:0.73rem;color:var(--muted)">4 min</div></div>
+          <div style="color:var(--muted2)">Legg (30s), quadriceps (30s/bein), hofte (30s), skulder (30s). Hold rolig – ikke press.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Øker bevegelighet. Starter reparasjonsprosessen i musklene.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;font-size:0.82rem;padding:0.5rem 0;">
+          <div><strong style="color:var(--text)">Felles evaluering</strong><div style="font-size:0.73rem;color:var(--muted)">3 min</div></div>
+          <div style="color:var(--muted2)">Hva gikk bra? Hva øver vi mer på? Fokus til neste gang.</div>
+          <div style="color:var(--muted);font-style:italic;font-size:0.78rem;">Refleksjon er en del av læringen. Øker metabevissthet om egen utvikling.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAL -->
+  <div id="tab-okt-mal" class="tab-content">
+    <div class="content-block" style="--ac:var(--purple)">
+      <div class="cb-title">📝 Din øktmal – fyll ut selv</div>
+      <p style="font-size:0.87rem;color:var(--muted2);line-height:1.65;margin-bottom:1.2rem;">Bruk denne strukturen når du lager din egen øktplan. Alle rubrikkene er obligatoriske – de sikrer at du har tenkt gjennom alle aspekter av økten.</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1rem;">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.8rem;color:var(--text)">Økt-header (fyll ut)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.83rem;color:var(--muted2);">
+          <div>📅 Dato og varighet: ___________</div>
+          <div>🎯 Idrett/aktivitet: ___________</div>
+          <div>👥 Målgruppe: ___________</div>
+          <div>📌 Øktens mål: ___________</div>
+          <div>⚡ Energisystem i fokus: ___________</div>
+          <div>🔗 Kompetansemål (KM): ___________</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(240,224,64,0.2);border-radius:12px;padding:1.2rem;margin-bottom:1rem;">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.5rem;color:var(--yellow)">🔥 Oppvarming (10–15 min)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.4rem;"><span>Hva</span><span>Hvordan</span><span>Hvorfor</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Generell (5–8 min)</div><div>___________</div><div>___________</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Spesiell (5–7 min)</div><div>___________</div><div>___________</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(91,159,255,0.2);border-radius:12px;padding:1.2rem;margin-bottom:1rem;">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.5rem;color:var(--blue)">⚡ Hoveddel (25–40 min)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.4rem;"><span>Øvelse / aktivitet</span><span>Gjennomføring</span><span>Hensikt</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Øvelse 1: ___</div><div>___________</div><div>___________</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Øvelse 2: ___</div><div>___________</div><div>___________</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Øvelse 3: ___</div><div>___________</div><div>___________</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Kamp / spill</div><div>___________</div><div>___________</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(61,232,160,0.2);border-radius:12px;padding:1.2rem;">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.5rem;color:var(--green)">🌀 Nedkjøling & evaluering (8–12 min)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.4rem;"><span>Aktivitet</span><span>Gjennomføring</span><span>Hensikt</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Jogg ned</div><div>___________</div><div>___________</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Tøying</div><div>___________</div><div>___________</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;font-size:0.8rem;color:var(--muted2);padding:0.4rem 0;border-top:1px solid var(--border);">
+          <div>Evaluering</div><div>___________</div><div>___________</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-label">★ Tips fra lærere</div>
+      <div class="fun-fact-text">Den viktigste rubrikken i øktplanen er <strong>Hvorfor</strong>. Enhver øvelse bør ha en klar treningsfaglig begrunnelse. Kan du ikke forklare hvorfor du gjør en øvelse, bør du vurdere om den skal være med.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== RANGERING ===== -->
+<div id="page-rangering" class="page">
+<div class="container">
+  <div class="sec-title" style="margin-top:0.5rem;margin-bottom:0.3rem;">🏆 Klassens rangering</div>
+  <div class="sec-sub" style="margin-bottom:1.8rem;">Basert på XP · Oppdatert i dag</div>
+  <div class="lb-card">
+    <div class="lb-header"><div class="lb-title">Topp elever – Vår 2026</div><div style="font-size:0.78rem;color:var(--muted)">Total XP</div></div>
+    <div class="lb-row"><div class="lb-rank r1">1</div><div class="lb-av" style="background:linear-gradient(135deg,#ffd700,#ff8c00)">SA</div><div class="lb-name">Sara Andersen</div><div class="lb-pts">1240</div></div>
+    <div class="lb-row"><div class="lb-rank r2">2</div><div class="lb-av" style="background:linear-gradient(135deg,#c0c0c0,#707070)">MK</div><div class="lb-name">Magnus Karlsen</div><div class="lb-pts">1115</div></div>
+    <div class="lb-row me"><div class="lb-rank r3">3</div><div class="lb-av" style="background:linear-gradient(135deg,var(--yellow),var(--green))">EL</div><div class="lb-name">Elise Larsen <span style="color:var(--yellow);font-size:0.72rem">(deg)</span></div><div class="lb-pts">840</div></div>
+    <div class="lb-row"><div class="lb-rank rn">4</div><div class="lb-av" style="background:linear-gradient(135deg,var(--green),var(--blue))">TO</div><div class="lb-name">Thomas Olsen</div><div class="lb-pts">790</div></div>
+    <div class="lb-row"><div class="lb-rank rn">5</div><div class="lb-av" style="background:linear-gradient(135deg,var(--orange),var(--red))">JH</div><div class="lb-name">Julie Hansen</div><div class="lb-pts">620</div></div>
+  </div>
+  <div class="streak-card" style="margin-top:1rem;">
+    <div>
+      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.2rem;">Din streak 🔥</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.7rem;">Dager på rad med læringsaktivitet</div>
+      <div class="streak-days">
+        <div class="sday done">Ma</div><div class="sday done">Ti</div><div class="sday done">On</div>
+        <div class="sday done">To</div><div class="sday done">Fr</div><div class="sday done">Lø</div>
+        <div class="sday today">Sø</div>
+      </div>
+    </div>
+    <div class="streak-num">12</div>
+  </div>
+</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// =====================================================
+// SPORTIQ – localStorage + brukerhåndtering
+// =====================================================
+
+// ---- KONSTANTER ----
+const LEVELS = [0,100,250,450,700,1000,1400,1900,2500,3200,4000];
+const STORAGE_KEY = 'sportiq_data';
+
+// ---- STANDARDDATA ----
+function defaultData() {
+  return {
+    name: '',
+    className: '',
+    xp: 0,
+    quizAnswered: {},
+    sportProgress: {},
+    moduleProgress: {},
+    streak: 0,
+    lastActive: null,
+    createdAt: new Date().toISOString()
+  };
+}
+
+// ---- LAST / LAGRE ----
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e) { return null; }
+}
+function saveData(d) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch(e) {}
+}
+
+// Global state
+let APP = null;
+
+// ---- STREAK-LOGIKK ----
+function updateStreak(d) {
+  const today = new Date().toDateString();
+  if (d.lastActive === today) return; // allerede oppdatert i dag
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (d.lastActive === yesterday) {
+    d.streak = (d.streak || 0) + 1;
+  } else if (d.lastActive !== today) {
+    d.streak = 1; // ny streak
+  }
+  d.lastActive = today;
+}
+
+// ---- NIVÅ-BEREGNING ----
+function calcLevel(xp) {
+  for (let i = LEVELS.length - 1; i >= 0; i--) {
+    if (xp >= LEVELS[i]) return { level: i + 1, current: LEVELS[i], next: LEVELS[i+1] || LEVELS[i] + 500 };
+  }
+  return { level: 1, current: 0, next: 100 };
+}
+
+// =====================================================
+// SPORTS DATA
+// =====================================================
+const sports = {
+  volleyball:{emoji:'🏐',title:'Volleyball',color:'var(--blue)',
+    desc:'Volleyball er et lagspill for to lag à 6 spillere adskilt av et nett. Dominerende energisystem: alaktatt (< 5 sek per rallye) + aerob restitusjon mellom poengene.',
+    regler:[
+      {term:'Poeng',desc:'Rally Point System – hvert rallye gir poeng. Første til 25 (med 2 forsprang). Best av 5 sett.'},
+      {term:'Kontakter',desc:'Maks 3 per ballbesittelse. Blokk teller ikke. Ingen dobbelt berøring.'},
+      {term:'Rotasjon',desc:'Laget som vinner serve rullerer med klokken. Spillere må stå på sin plass til ballen er servet.'},
+      {term:'Libero',desc:'Spesialist i bakre forsvar. Annen drakt. Kan ikke serve, spikar eller blokkere.'},
+      {term:'Feil',desc:'4 touches, nett-berøring, ball utenfor, back-spiker fremfor 3-meterslinjen.'},
+    ],
+    teknikk:[
+      {title:'Serve – flytende og jump',desc:'Flytende: slag fra under, lav bue, kontroll. Jump serve: tilspring, hopp, kraft ned i banen – vanskelig å motta.'},
+      {title:'Underarmsmottak',desc:'Skulderbreddes stilling, knær lett bøyd, armer strake og samlet. Plattformen peker mot setter. Vri kroppen mot ballen.'},
+      {title:'Sett',desc:'Åpne hender over hodet. Trekantformet kontakt. Rask bevegelse – ballen knapt stopper.'},
+      {title:'Spiker',desc:'3–4 stegs tilspring, dobbelt bensett, arm bak – sving frem – slå med åpen hånd OVER ballen ned i banen.'},
+      {title:'Blokk',desc:'Hopp med hendene over nettet. Hender rett frem, tukk under ballen. Timing > høyde.'},
+    ],
+    taktikk:[
+      {title:'5-1-systemet',desc:'5 angripere, 1 setter som rullerer inn fra bakre rekke. Maks 5 angripere til enhver tid.'},
+      {title:'6-2-systemet',desc:'2 settere, begge setter fra bakre rekke. Alltid 3 angripere fremme. Enklere for yngre lag.'},
+      {title:'Servemottak – W-formasjon',desc:'3–5 spillere i W-bak. Libero tar midten. Kommunikasjon er nøkkelen.'},
+      {title:'High press-forsvar',desc:'Etter blokk dekker bakspillerne hullet. Libero tar lang ball. Ytterspillere tar diagonal.'},
+    ],
+    funfakt:'En profesjonell jump serve treffer ballen med over 120 km/t. Det er raskere enn en gjennomsnittlig tenniserver. Motstanderen har under 0,3 sekunder til å reagere.',
+    skade:'Vanligste skader: hoppknær (patellar tendinopati), fingerskader ved blokkering, ankeldistorse. Forebygging: Nordic Hamstring, eksentrisk tåhev, fingeraktivering i oppvarming.',
+    quiz:[
+      {q:'Hva er maks antall kontakter per lag per ballbesittelse?',opts:['2','3','4','Ubegrenset'],correct:1,fb:'Maks 3 kontakter. Blokk teller ikke som kontakt. Ideell sekvens: mottak → sett → spiker.'},
+      {q:'Hva kjennetegner 5-1-systemet i volleyball?',opts:['5 forsvarere, 1 angriper','5 angripere og 1 setter som rullerer fra bakre rekke','5 settere og 1 libero','5 servespesialister'],correct:1,fb:'5-1 betyr 5 angripere og 1 setter. Setteren rullerer fra bakre rekke for å alltid ha 5 angripere tilgjengelig – det gir maksimalt angrepsalternativ.'},
+    ]},
+  badminton:{emoji:'🏸',title:'Badminton',color:'var(--green)',
+    desc:'Racketsport med fjærball. Spilles singel (1v1) og dobbel (2v2). Raskeste slag i sport: 493 km/t. Energisystem: dominert av laktatt + alaktatt med aerob restitusjon.',
+    regler:[
+      {term:'Poeng',desc:'Rally Point System. Første til 21 (2 forsprang). Best av 3 sett. Tiebreak til 30 ved 29-29.'},
+      {term:'Serve',desc:'Underhåndsserv kun – under hoften. Diagonalt til motstanderens serviceboks. Endres hvert poeng (singel).'},
+      {term:'Singel vs dobbel-bane',desc:'Singel: smal side, lang bakbane. Dobbel: bred side (ekstra stripe), kortere servicebane.'},
+      {term:'Feil',desc:'Shuttle utenfor, i nettet, spiller berører nettet, shuttle treffer spillerens kropp.'},
+      {term:'Let',desc:'Spilles om igjen ved uforutsette forstyrrelser, f.eks. shuttle setter seg fast i nettet.'},
+    ],
+    teknikk:[
+      {title:'Forehand Clear',desc:'Slag fra bakbane til bakbane, høy bue. Skyver motstander bak og kjøper tid. Svingbevegelse fra skulder.'},
+      {title:'Smash',desc:'Kraftig nedoverslag fra høy posisjon. Raskeste slagets i badminton. Hopp-smash gir brattere vinkel.'},
+      {title:'Drop Shot',desc:'Mykt slag til fronten. Ballen faller rett over nettet. Brukes for å variere og trekke motstander frem.'},
+      {title:'Net Shot',desc:'Spilles ved nettet. Ballen tumler over nettkanten. Svært vanskelig å returnere. Krever finmotorikk.'},
+      {title:'Drive',desc:'Flatt, raskt slag parallelt med gulvet. Brukes i dobbel for press og tempo.'},
+    ],
+    taktikk:[
+      {title:'Diagonal press (singel)',desc:'Slå til hjørner diagonalt – tvinger motstander til å løpe maksimalt. Kombiner bakbane-clear med drop.'},
+      {title:'Rotasjon i dobbel',desc:'Side-by-side (defensivt) og front-back (offensivt). Bytt automatisk – kommuniser løpende.'},
+      {title:'Servtaktikk dobbel',desc:'Kort serve til T-punktet er standard. Flick serve (lang) brukes for å overraske. Les motstanderens returnmønster.'},
+      {title:'Variere tempo',desc:'Veksle mellom raske drives og langsomme drops. Motstander mister rytmen og er alltid i bevegelse.'},
+    ],
+    funfakt:'En badminton-shuttlecock kan nå 493 km/t ved et profesjonelt smash – den raskeste bevegelsen i NOEN idrett. Til sammenligning: tenniserver er maks ~263 km/t. Friidrettens hurtigste kastøvelse (spyd) er ca. 100 km/t.',
+    skade:'Vanligste skader: tennisalbue (lateral epikondylitt), ankeldistorse, rotatormansjett-skader. Forebygging: håndleddsrotasjon i oppvarming, eksentrisk underarmtrening, riktig grep.',
+    quiz:[
+      {q:'Hva er forskjellen mellom banen i singel og dobbel i badminton?',opts:['Ingen forskjell','Singel bruker smalere sidebaner, dobbel bruker full bredde','Dobbel bruker kortere bane','Singel er kortere'],correct:1,fb:'Singel: smal (ingen ekstra stripe på siden) + lang bakbane. Dobbel: full bredde (ekstra stripe) + kortere servicebane. Husk: singel = smal og lang, dobbel = bred og kortere serve.'},
+      {q:'Hva heter det kraftige nedoverslaget i badminton?',opts:['Drop Shot','Clear','Smash','Drive'],correct:2,fb:'Smash er det kraftige nedoverslaget – raskeste slagets i hele badminton. Hopp-smash gir enda brattere innfallsvinkel og er svært vanskelig å returnere.'},
+    ]},
+  pickleball:{emoji:'🥒',title:'Pickleball',color:'var(--teal)',
+    desc:'Kombinasjon av tennis, badminton og bordtennis. Spilles på badmintonbane med solid paddle og berlinderhull-ball. Verdens raskest voksende idrett.',
+    regler:[
+      {term:'Banen',desc:'Samme som dobbel badmintonbane: 6,1 × 13,4 m. Nett: 91 cm ved siden, 86 cm i midten.'},
+      {term:'Serve',desc:'Underarmserv under hoften. Diagonalt til motstanderens serviceboks. Kun serverelaget kan score poeng.'},
+      {term:'Double Bounce Rule',desc:'Etter serve: returlaget MÅ la ballen sprette. OG serverelaget MÅ la returnen sprette. Deretter fritt spill.'},
+      {term:'The Kitchen',desc:'Non-Volley Zone: 2,13 m på begge sider av nettet. Du kan IKKE stå der og volle. Du kan gå inn etter sprett.'},
+      {term:'Poeng',desc:'Kun serverelaget scorer. Første til 11 (med 2 forsprang). I dobbel: "server-score – returlag-score – servernummer".'},
+    ],
+    teknikk:[
+      {title:'Dink Shot',desc:'Mykt slag fra kjøkkenlinjen til motstanderens kitchen. Lavt over nettet. Grunnlaget for all pickleball-taktikk.'},
+      {title:'Third Shot Drop',desc:'Det tredje slagets etter serve og retur. Myk drop til motstanderens kitchen – åpner veien til nettet.'},
+      {title:'Drive',desc:'Kraftig, flatt slag fra bakbanen for å presse motstander bak.'},
+      {title:'Punch Volley',desc:'Kompakt volle ved nettet. Kort backswing, kontrollert kraft. Rask avslutning.'},
+      {title:'Lob',desc:'Høyt slag over motstanderens hoder. Brukes mot spillere langt fremme.'},
+    ],
+    taktikk:[
+      {title:'Kitchen-kontroll er alt',desc:'Den som kontrollerer kjøkkenlinjen, vinner. Bruk Third Shot Drop for å avansere. Nettspillet er avgjørende.'},
+      {title:'Dink-tålmodighet',desc:'Dink frem og tilbake – tving motstander til å løfte ballen for høyt, DANN angrip. Tving feil, ikke forcér vinnere.'},
+      {title:'Slå til midten',desc:'Skaper forvirring i dobbel om hvem som tar ballen. Klassisk "baneplass"-taktikk.'},
+      {title:'Stacking (dobbel)',desc:'Begge på samme side etter serve for å beholde forehand i midten. Avansert taktikk.'},
+    ],
+    funfakt:'Pickleball ble oppfunnet i 1965 av den amerikanske politikeren Joel Pritchard og vennene hans på en kjedelig sommerdag – de kombinerte badminton-banen med ping-pong-padler og en hullete ball. Fra 2013 til 2023 eksploderte det til 8+ millioner spillere i USA alene.',
+    skade:'Vanligste skader: tennisalbue, skulder-overbelastning, ankeldistorse. Forebygging: oppvarming av håndledd og skulder, riktig paddlegrep, unngå overrekke.',
+    quiz:[
+      {q:'Hva er "Double Bounce Rule" i pickleball?',opts:['Ballen må sprette to ganger for at den er "ut"','Etter serve MÅ returlaget la ballen sprette, og serverelaget MÅ la returnen sprette','Begge spillere i dobbel må berøre ballen','Du kan bare serve to ganger'],correct:1,fb:'Double Bounce Rule eliminerer servefordelen og gjør nettspillet avgjørende. Begge lag MÅ la ballen sprette én gang etter serve og retur – deretter er vollespill tillatt.'},
+      {q:'Hvorfor er "The Kitchen" viktig i pickleball?',opts:['Det er der dommeren står','Du kan ikke volle fra den sonen – den styrer nettspillet','Det er der ballen alltid lander ved serve','Den bestemmer poengtellingen'],correct:1,fb:'The Kitchen (Non-Volley Zone) er de 2,13 meterne på begge sider av nettet. Å volle fra denne sonen er feil. Dette gjør at begge lag må jobbe for å komme til nettet med ballen sprettende – nettspillet er dermed avgjørende i pickleball.'},
+    ]},
+  tennis:{emoji:'🎾',title:'Tennis',color:'var(--yellow)',
+    desc:'Klassisk racketsport for singel eller dobbel. Energisystem: aerob base + anaerob for eksplosive rallyer. Krever kraft, presisjon og utholdenhet.',
+    regler:[
+      {term:'Poengsystem',desc:'15 – 30 – 40 – Game. Deuce ved 40–40: trenger 2 poeng på rad. 6 games vinner sett, tiebreak ved 6-6.'},
+      {term:'Serve',desc:'To forsøk per poeng. Underhåndskast + slag ned diagonalt. Fot-feil gir dobbelt-feil. Double fault = poeng til motstander.'},
+      {term:'Let',desc:'Serve berører nettet og lander riktig: tas om igjen (ubegrenset).'},
+      {term:'Linjer',desc:'Treffer linjen = inne. Vollespill overalt (unntatt service-retur som MÅ sprette).'},
+      {term:'Tiebreak',desc:'Ved 6-6 spilles til 7 (2 margin). Serve byttes etter 1 poeng, deretter hvert 2.'},
+    ],
+    teknikk:[
+      {title:'Forehand – topspin',desc:'Åpen stilling. Svingbevegelse lav til høy. Børst OVER ballen. Topspin gir høy bue og kraftig sprett.'},
+      {title:'Backhand – tohendt',desc:'To hender gir stabilitet. Roter skuldrene. Kontakt foran kroppen. Anbefalt for nybegynnere.'},
+      {title:'Serve – flat, topspin og slice',desc:'Flat: kraft rett frem. Topspin (kick): bøy ryggen, børst opp over → høy sprett. Slice: børst rundt siden → curver.'},
+      {title:'Volley',desc:'Fremme ved nettet, ingen sprett. Kompakt swing. Punch-bevegelse, ikke swing. Hold greppet.'},
+      {title:'Drop Shot',desc:'Mykt slag med backspin rett over nettet. Overraskende fra bakbanen. Vanskelig å nå fra base.'},
+    ],
+    taktikk:[
+      {title:'Baseline-spill',desc:'Hold deg bak basislinja. Vinn via konsistens og motstanders feil. Dominerer på grusbane.'},
+      {title:'Slå til svakheten',desc:'Identifiser om motstander er svak på backhand/forehand. Drill dit konsekvent. Press bygger seg gradvis.'},
+      {title:'Crosscourt vs down-the-line',desc:'Crosscourt (diagonal): trygt, lengre nettpassasje. Down-the-line: risikoshot, men åpner banen.'},
+      {title:'Serve and Volley',desc:'Server og løper til nettet umiddelbart. Klassisk på gressbane. Krever god serve og refleksvolley.'},
+    ],
+    funfakt:'Roger Federer slo over 11 000 ess i karrieren. Til sammenligning: en god ungdomsspiller er fornøyd med 1 ess per kamp. Federers serve nådde opptil 230 km/t. Gjennomsnittspersonen kan ikke engang se ballen på den hastigheten – øyet rekker ikke å prosessere bevegelsen.',
+    skade:'Vanligste skader: tennisalbue (lateral epikondylitt ved hard gripebelastning), rotatorsmansjett-skade, kneheller (patellar tendinopati). Forebygging: eksentrisk underarmtrening, korrekt grepteknikk, rotatorsmansjett-styrking.',
+    quiz:[
+      {q:'Hva betyr "Deuce" i tennis?',opts:['Siste poeng i kampen','Begge spillere har 40 – trenger 2 poeng på rad for å vinne gamet','Settet er over','Spillerne bytter side'],correct:1,fb:'Deuce = 40–40. Nå trengs 2 poeng på rad. Første poeng gir "Advantage" – vinner du neste, vinner du gamet. Taper du, er det Deuce igjen. Denne mekanismen gjør at tennis-game aldri kan bli "uavgjort".'},
+      {q:'Hvilken servevariant gir høyest sprett fra baklinjen?',opts:['Flat serve','Topspin serve (kick)','Slice serve','Underarmssent'],correct:1,fb:'Topspin serve (kick serve) slås ved å bøye ryggen og børste opp og frem over ballen. Resultatet er høy, hoppende sprett som presser motstander bak basislinja – vanskelig å angripe.'},
+    ]},
+  fotball:{emoji:'⚽',title:'Fotball',color:'var(--orange)',
+    desc:'Verdens mest populære idrett med 250+ mill. spillere. Energisystem: aerob base (løping 10–13 km/kamp) + alaktatt for sprinter og eksplosive aksjoner (kun ~3 % av løping er sprint).',
+    regler:[
+      {term:'Kampen',desc:'2 × 45 min + tilleggstid. 11 mot 11. Vinner har flest mål.'},
+      {term:'Offside',desc:'Angriper er i offside-posisjon hvis nærmere motstanderens mållinje enn ballen OG nest siste forsvarer i det øyeblikket ballen spilles – OG er aktivt involvert.'},
+      {term:'Straffe',desc:'Foul inne i eget 16-metersfelt = straffespark fra 11 m. Kun keeper mot skyteren.'},
+      {term:'Kort',desc:'Gult kort = advarsel (2 gule = rødt). Rødt = utvisning. Laget spiller med 10 mot 11.'},
+      {term:'Hjørnespark / målspark',desc:'Ball over baklinjen av forsvarende lag = cornerspark. Av angripende lag = målspark.'},
+    ],
+    teknikk:[
+      {title:'Innsidepasning',desc:'Støttebein ved siden av ballen. Kontakt med innsida av foten. Stram vrist. Retning styres av hofta. Presisjon > kraft.'},
+      {title:'Mottak og kontroll',desc:'Myk fot – "absorbér" ballen. Kontroller i bevegelsesretning. Første touch avgjør neste mulighet.'},
+      {title:'Vristskudd',desc:'Kne over ballen. Strakk vristen. Kontakt midten av ballen. Gir kraft og presisjon.'},
+      {title:'Dribbling',desc:'Ballen nær foten, lavt tyngdepunkt. Finter: kropp én vei, ball motsatt. Hastighetsdribbling: lengre berøringer.'},
+      {title:'Heading',desc:'Møt ballen med pannen. Nakkemusklene stramme. Aktiv bevegelse mot ballen. Øyne åpne til kontakt.'},
+    ],
+    taktikk:[
+      {title:'4-3-3',desc:'4 forsvarere, 3 midtbane, 3 angripere. Offensivt system. Gir bredde i angrep. Krever løpesterk midtbane.'},
+      {title:'4-4-2',desc:'Klassisk. Solid midtbane på to rekker. Lett å forstå – egnet for yngre lag.'},
+      {title:'Høyt press',desc:'Press motstander høyt på banen – tving feil. Krever svært høy kondisjon og koordinert trykk.'},
+      {title:'Overganger (Counter-attack)',desc:'Vinne ball + raskt fremover = stor sjanseoverlegenhet. Avgjør mange kamper.'},
+    ],
+    funfakt:'En proffspiller løper 10–13 km per kamp, men bare ~3 % er sprint. Resten er jogg, gange og posisjonering. Beregninger viser at Erling Haaland i snitt bruker mindre enn 60 sekunder per kamp i full sprint – men det er DISSE sekundene som er målgivende.',
+    skade:'Vanligste skader: lyskestrekk, fremre korsbånd (ACL) – særlig hos jenter, ankeldistorse, hoppknær. Forebygging: FIFA 11+-program (dokumentert 30–50 % skadereduksjon), Nordic Hamstring, balanse-øvelser.',
+    quiz:[
+      {q:'Når er en spiller i offside i fotball?',opts:['Når spilleren er bak siste forsvarer','Når spilleren er nærmere motstanderens mållinje enn ballen OG nest siste forsvarer, og aktivt involvert','Når spilleren er foran ballen','Når spilleren er i motstanderens halvdel'],correct:1,fb:'Offside krever to ting: 1) Spilleren er nærmere motstanderens mållinje enn ballen OG nest siste forsvarer. 2) Spilleren er aktivt involvert. Å stå i offside-posisjon uten å påvirke spillet er IKKE straffbart.'},
+      {q:'Hva gir vanligvis de beste statistiske resultatene av høyt press og lavt press-fotball?',opts:['Høyt press vinner alltid','Lavt press er alltid mer defensivt','Begge kan være effektive – avhenger av laget og motstander','Høyt press er for krevende og bør aldri brukes'],correct:2,fb:'Høyt press (som Liverpool under Klopp) krever svært høy kondisjon og koordinering, men er svært effektivt. Lavt press er mer kontrollert og passer lag med god forsvarsdisiplin. Begge er gyldige taktiske valg – avhengig av lagets kvaliteter.'},
+    ]}
+};
+
+// =====================================================
+// PROGRESJONSSYSTEM – Idretter + Moduler
+// =====================================================
+
+// --- IDRETTER: 7 steg per idrett ---
+// besøkt(1) + 4 tabs(4) + 2 quiz(2) = 7
+function calcSportProgress(key) {
+  if (!APP) return 0;
+  const sp = (APP.sportProgress || {})[key];
+  const qa = APP.quizAnswered || {};
+  const s = sports[key];
+  if (!s) return 0;
+  let score = 0;
+  const total = 1 + 4 + s.quiz.length;
+  if (sp && sp.visited) score += 1;
+  const tabs = ['regler','teknikk','taktikk','fakta'];
+  tabs.forEach(t => { if (sp && sp.tabs && sp.tabs[t]) score += 1; });
+  s.quiz.forEach((q, qi) => { if (qa[`sq-${key}-${qi}`] !== undefined) score += 1; });
+  return Math.round((score / total) * 100);
+}
+
+// --- MODULER: steg basert på tabs besøkt + quiz besvart ---
+// trening: 5 tabs + 3 quiz = 8 steg
+// oektplan: 4 tabs = 4 steg (ingen quiz der ennå)
+// idretter: aggregert snitt av alle 5 idretter
+function calcModuleProgress(key) {
+  if (!APP) return 0;
+  const mp = (APP.moduleProgress || {})[key] || {};
+  const qa = APP.quizAnswered || {};
+
+  if (key === 'idretter') {
+    const sports_keys = ['volleyball','badminton','pickleball','tennis','fotball'];
+    const avg = sports_keys.reduce((sum, k) => sum + calcSportProgress(k), 0) / sports_keys.length;
+    return Math.round(avg);
+  }
+  if (key === 'trening') {
+    // 5 tabs + 3 statiske quiz (qe1, qsk1, qmf1)
+    const tabs = ['energi','superkomp','muskler','prinsipper','oevelser'];
+    const quizIds = ['qe1','qsk1','qmf1'];
+    const total = tabs.length + quizIds.length;
+    let score = tabs.filter(t => mp.tabs && mp.tabs[t]).length;
+    score += quizIds.filter(id => qa[id] !== undefined).length;
+    return Math.round((score / total) * 100);
+  }
+  if (key === 'oektplan') {
+    // 4 tabs
+    const tabs = ['okt-hvorfor','okt-struktur','okt-eksempel','okt-mal'];
+    const total = tabs.length;
+    const score = tabs.filter(t => mp.tabs && mp.tabs[t]).length;
+    return Math.round((score / total) * 100);
+  }
+  return 0;
+}
+
+// ---- OPPDATER UI ----
+function refreshUI() {
+  const d = APP;
+  if (!d) return;
+
+  // Nav + hero navn
+  const firstName = d.name || '';
+  const initials = firstName.substring(0, 2).toUpperCase() || '?';
+  const navAv = document.getElementById('nav-avatar');
+  const navNm = document.getElementById('nav-name');
+  const heroNm = document.getElementById('hero-name');
+  if (navAv) navAv.textContent = initials;
+  if (navNm) navNm.textContent = firstName;
+  if (heroNm) heroNm.textContent = firstName + '!';
+
+  // XP + nivå
+  const lv = calcLevel(d.xp);
+  const pct = Math.min(100, Math.round(((d.xp - lv.current) / Math.max(1, lv.next - lv.current)) * 100));
+  const lvEl = document.getElementById('xp-level');
+  const xpEl = document.getElementById('xp-display');
+  const toNext = document.getElementById('xp-to-next');
+  const bar = document.getElementById('xp-bar-fill');
+  if (lvEl) lvEl.textContent = lv.level;
+  if (xpEl) xpEl.textContent = d.xp;
+  if (toNext) toNext.textContent = Math.max(0, lv.next - d.xp);
+  if (bar) bar.style.width = pct + '%';
+
+  // Stats
+  const quizCount = Object.keys(d.quizAnswered || {}).length;
+  const sc = document.getElementById('stat-completed');
+  const ss = document.getElementById('stat-streak');
+  if (sc) sc.textContent = quizCount;
+  if (ss) ss.textContent = (d.streak || 0) + '🔥';
+
+  // Innstillinger-panel
+  const sn = document.getElementById('s-name');
+  const scl = document.getElementById('s-class');
+  const sx = document.getElementById('s-xp');
+  const sq = document.getElementById('s-quiz');
+  const sst = document.getElementById('s-streak');
+  if (sn) sn.textContent = d.name;
+  if (scl) scl.textContent = d.className || '(ikke oppgitt)';
+  if (sx) sx.textContent = d.xp + ' XP';
+  if (sq) sq.textContent = quizCount + ' spørsmål';
+  // --- Idrettskort (data-sport) ---
+  ['volleyball','badminton','pickleball','tennis','fotball'].forEach(key => {
+    const pct = calcSportProgress(key);
+    document.querySelectorAll(`[data-sport="${key}"] .sport-prog-fill`).forEach(el => el.style.width = pct + '%');
+    document.querySelectorAll(`[data-sport="${key}"] .sport-prog-pct`).forEach(el => el.textContent = pct + '%');
+  });
+
+  // --- Modulkort (data-module) ---
+  ['idretter','trening','oektplan'].forEach(key => {
+    const pct = calcModuleProgress(key);
+    document.querySelectorAll(`[data-module="${key}"] .mod-prog-fill`).forEach(el => el.style.width = pct + '%');
+    document.querySelectorAll(`[data-module="${key}"] .mod-prog-pct`).forEach(el => el.textContent = pct + '%');
+  });
+
+  // --- Flytende kort (volleyball) ---
+  const vPct = calcSportProgress('volleyball');
+  const fcFill = document.getElementById('floating-card-fill');
+  const fcPct = document.getElementById('floating-card-pct');
+  if (fcFill) fcFill.style.width = vPct + '%';
+  if (fcPct) fcPct.textContent = vPct + '%';
+}
+
+// ---- XP TILDELING ----
+function awardXP(amount, label) {
+  APP.xp += amount;
+  updateStreak(APP);
+  saveData(APP);
+  refreshUI();
+  toast('⚡ +' + amount + ' XP' + (label ? ' – ' + label : '') + '!');
+}
+
+// =====================================================
+// VELKOMSTSKJERM
+// =====================================================
+function checkWelcomeReady() {
+  const name = document.getElementById('input-name').value.trim();
+  document.getElementById('welcome-btn').disabled = name.length < 2;
+}
+
+function startApp() {
+  const name = document.getElementById('input-name').value.trim();
+  if (name.length < 2) return;
+  const cls = document.getElementById('input-class').value.trim();
+
+  APP = defaultData();
+  APP.name = name;
+  APP.className = cls;
+  updateStreak(APP);
+  saveData(APP);
+
+  document.getElementById('welcome-overlay').style.display = 'none';
+  refreshUI();
+}
+
+// =====================================================
+// INNSTILLINGER
+// =====================================================
+function openSettings() {
+  if (!APP) return;
+  refreshUI();
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+function resetApp() {
+  if (!confirm('Er du sikker? All progresjon, XP og streak slettes permanent.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// =====================================================
+// INITIALISERING – kjøres ved sideload
+// =====================================================
+(function init() {
+  const saved = loadData();
+  if (saved && saved.name) {
+    APP = saved;
+    updateStreak(APP);
+    saveData(APP);
+    document.getElementById('welcome-overlay').style.display = 'none';
+    refreshUI();
+  }
+  // Klikk utenfor innstillinger lukker modalen
+  document.getElementById('settings-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeSettings();
+  });
+})();
+
+
+// ===== NAV =====
+function nav(page, tabEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const pageEl = document.getElementById('page-' + page);
+  if (pageEl) pageEl.classList.add('active');
+  // Finn riktig tab via data-page attributt (mer robust enn indeks)
+  const matchTab = document.querySelector('.nav-tab[data-page="' + page + '"]');
+  if (matchTab) matchTab.classList.add('active');
+  else if (tabEl) tabEl.classList.add('active');
+  if (page === 'idretter') {
+    const slv = document.getElementById('sport-list-view');
+    const sdv = document.getElementById('sport-detail-view');
+    if (slv) slv.style.display = '';
+    if (sdv) sdv.style.display = 'none';
+  }
+  window.scrollTo(0, 0);
+}
+
+// ===== OPEN SPORT =====
+function openSport(key) {
+  const s = sports[key];
+  if (!s) return;
+  // Nav til idretter-siden
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const pageEl = document.getElementById('page-idretter');
+  if (pageEl) pageEl.classList.add('active');
+  const matchTab = document.querySelector('.nav-tab[data-page="idretter"]');
+  if (matchTab) matchTab.classList.add('active');
+
+  const slv = document.getElementById('sport-list-view');
+  const dv = document.getElementById('sport-detail-view');
+  if (slv) slv.style.display = 'none';
+  if (!dv) return;
+  dv.style.display = '';
+
+  // Registrer at eleven har besøkt denne idretten (gir litt XP første gang)
+  if (APP) {
+    APP.sportProgress = APP.sportProgress || {};
+    if (!APP.sportProgress[key]) {
+      APP.sportProgress[key] = { visited: true };
+      APP.xp += 5;
+      updateStreak(APP);
+      saveData(APP);
+      refreshUI();
+    }
+  }
+
+  const regler = s.regler.map(r => `<li><span class="cb-term">${r.term}</span>${r.desc}</li>`).join('');
+  const teknikk = s.teknikk.map(t => `<div class="tactic-box"><div class="tactic-title" style="color:${s.color}">▸ ${t.title}</div><div class="tactic-desc">${t.desc}</div></div>`).join('');
+  const taktikk = s.taktikk.map(t => `<div class="tactic-box"><div class="tactic-title" style="color:${s.color}">▸ ${t.title}</div><div class="tactic-desc">${t.desc}</div></div>`).join('');
+  const quizHtml = s.quiz.map((q, qi) => {
+    const qid = `sq-${key}-${qi}`;
+    // Sjekk om allerede besvart
+    const prev = APP && APP.quizAnswered && APP.quizAnswered[qid];
+    const opts = q.opts.map((o, oi) => {
+      let cls = '';
+      if (prev !== undefined) {
+        if (oi === q.correct) cls = ' correct';
+        else if (oi === prev.chosen && prev.chosen !== q.correct) cls = ' wrong';
+      }
+      return `<button class="qb-opt${cls}" onclick="qb('${qid}',${oi},${q.correct},'${q.fb.replace(/'/g, "\\'").replace(/\n/g, ' ')}')" ${prev !== undefined ? 'style="pointer-events:none"' : ''}><div class="qb-letter">${String.fromCharCode(65 + oi)}</div>${o}</button>`;
+    }).join('');
+    const fbHtml = prev !== undefined
+      ? `<div class="qb-feedback show ${prev.chosen === q.correct ? 'qb-correct-fb' : 'qb-wrong-fb'}">${prev.chosen === q.correct ? '<strong>✅ Riktig!</strong> ' : '<strong>❌ Ikke helt riktig.</strong> '}${q.fb}</div>`
+      : `<div class="qb-feedback" id="${qid}-fb"></div>`;
+    return `<div class="quiz-block" style="margin-bottom:1rem;"><div class="quiz-block-title">🧠 Spørsmål ${qi + 1}</div><div class="quiz-block-sub">+25 XP ved riktig svar</div><div class="qb-question">${q.q}</div><div class="qb-opts" id="${qid}-opts">${opts}</div>${fbHtml}</div>`;
+  }).join('');
+
+  dv.innerHTML = `
+    <button class="btn-back" onclick="backToSportList()">← Tilbake til idretter</button>
+    <div class="sport-detail-header" style="--sc:${s.color}">
+      <div class="sdh-top">
+        <div class="sdh-icon">${s.emoji}</div>
+        <div>
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${s.color};margin-bottom:0.3rem;">KM 1 · IDR06-03</div>
+          <div class="sdh-title">${s.title}</div>
+          <div class="sdh-desc">${s.desc}</div>
+        </div>
+      </div>
+      <div class="sdh-stats">
+        <div><div class="sdh-sv">${s.regler.length}</div><div class="sdh-sl">Regler</div></div>
+        <div><div class="sdh-sv">${s.teknikk.length}</div><div class="sdh-sl">Teknikker</div></div>
+        <div><div class="sdh-sv">${s.taktikk.length}</div><div class="sdh-sl">Taktikker</div></div>
+        <div><div class="sdh-sv">${s.quiz.length}</div><div class="sdh-sl">Quizspørsmål</div></div>
+      </div>
+    </div>
+    <div class="tab-nav" id="sport-tab-nav-${key}">
+      <button class="tab-btn active" onclick="switchSportTab('sr-${key}',this,'${key}')">📋 Regler</button>
+      <button class="tab-btn" onclick="switchSportTab('st-${key}',this,'${key}')">🎯 Teknikk</button>
+      <button class="tab-btn" onclick="switchSportTab('stk-${key}',this,'${key}')">🧩 Taktikk</button>
+      <button class="tab-btn" onclick="switchSportTab('sf-${key}',this,'${key}')">⚡ Fakta & skader</button>
+      <button class="tab-btn" onclick="switchSportTab('sq-${key}',this,'${key}')">🧠 Quiz</button>
+    </div>
+    <div id="tab-sr-${key}" class="tab-content active"><div class="content-block" style="--ac:${s.color}"><div class="cb-title">📋 Regler og regelverk</div><ul class="cb-list">${regler}</ul></div></div>
+    <div id="tab-st-${key}" class="tab-content"><div class="content-block" style="--ac:${s.color}"><div class="cb-title">🎯 Tekniske elementer</div>${teknikk}</div></div>
+    <div id="tab-stk-${key}" class="tab-content"><div class="content-block" style="--ac:${s.color}"><div class="cb-title">🧩 Taktikk og spillforståelse</div>${taktikk}</div></div>
+    <div id="tab-sf-${key}" class="tab-content">
+      <div class="fun-fact"><div class="fun-fact-label">★ Fun-fakta</div><div class="fun-fact-text">${s.funfakt}</div></div>
+      <div class="myth-box"><div class="myth-label">🩹 Vanligste skader og forebygging</div><div class="myth-truth">${s.skade}</div></div>
+      <div class="info-box"><div class="info-label">⚡ Dominerende energisystem</div><div class="info-text">${s.desc}</div></div>
+    </div>
+    <div id="tab-sq-${key}" class="tab-content">${quizHtml}</div>
+  `;
+  window.scrollTo(0, 0);
+}
+
+function backToSportList() {
+  const slv = document.getElementById('sport-list-view');
+  const sdv = document.getElementById('sport-detail-view');
+  if (slv) slv.style.display = '';
+  if (sdv) sdv.style.display = 'none';
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(tabId, btn) {
+  const allIds = ['energi','superkomp','muskler','prinsipper','oevelser',
+                  'okt-hvorfor','okt-struktur','okt-eksempel','okt-mal'];
+  allIds.forEach(id => { const el = document.getElementById('tab-' + id); if (el) el.classList.remove('active'); });
+  if (btn && btn.closest) btn.closest('.tab-nav').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const target = document.getElementById('tab-' + tabId);
+  if (target) target.classList.add('active');
+  if (btn) btn.classList.add('active');
+
+  // Registrer tab-besøk for modulprogresjon
+  if (APP) {
+    APP.moduleProgress = APP.moduleProgress || {};
+    const treningTabs = ['energi','superkomp','muskler','prinsipper','oevelser'];
+    const oektplanTabs = ['okt-hvorfor','okt-struktur','okt-eksempel','okt-mal'];
+    if (treningTabs.includes(tabId)) {
+      APP.moduleProgress.trening = APP.moduleProgress.trening || { tabs: {} };
+      if (!APP.moduleProgress.trening.tabs[tabId]) {
+        APP.moduleProgress.trening.tabs[tabId] = true;
+        saveData(APP);
+        refreshUI();
+      }
+    } else if (oektplanTabs.includes(tabId)) {
+      APP.moduleProgress.oektplan = APP.moduleProgress.oektplan || { tabs: {} };
+      if (!APP.moduleProgress.oektplan.tabs[tabId]) {
+        APP.moduleProgress.oektplan.tabs[tabId] = true;
+        saveData(APP);
+        refreshUI();
+      }
+    }
+  }
+}
+
+function switchSportTab(tabId, btn, key) {
+  // Deaktiver alle tabs i dette sport-tab-nav
+  const tabNav = document.getElementById('sport-tab-nav-' + key);
+  if (tabNav) tabNav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // Skjul alle sport tab-contents i sport-detail-view
+  const dv = document.getElementById('sport-detail-view');
+  if (dv) dv.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  const target = document.getElementById('tab-' + tabId);
+  if (target) target.classList.add('active');
+
+  // Registrer tab-besøk for progresjon
+  if (APP && key) {
+    APP.sportProgress = APP.sportProgress || {};
+    APP.sportProgress[key] = APP.sportProgress[key] || { visited: true };
+    APP.sportProgress[key].tabs = APP.sportProgress[key].tabs || {};
+    // Map tab-id til tabname: sr=regler, st=teknikk, stk=taktikk, sf=fakta
+    const tabMap = { [`sr-${key}`]:'regler', [`st-${key}`]:'teknikk', [`stk-${key}`]:'taktikk', [`sf-${key}`]:'fakta' };
+    const tabName = tabMap[tabId];
+    if (tabName && !APP.sportProgress[key].tabs[tabName]) {
+      APP.sportProgress[key].tabs[tabName] = true;
+      saveData(APP);
+      refreshUI();
+    }
+  }
+}
+
+// ===== QUIZ – lagrer svar og tildeler XP =====
+function qb(id, chosen, correct, feedback) {
+  // Hindre dobbelt-svar
+  if (APP && APP.quizAnswered && APP.quizAnswered[id] !== undefined) return;
+
+  const opts = document.querySelectorAll('#' + id + '-opts .qb-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  opts[chosen].classList.add(chosen === correct ? 'correct' : 'wrong');
+  if (chosen !== correct) opts[correct].classList.add('correct');
+  const fb = document.getElementById(id + '-fb');
+  fb.className = 'qb-feedback show ' + (chosen === correct ? 'qb-correct-fb' : 'qb-wrong-fb');
+  fb.innerHTML = (chosen === correct ? '<strong>✅ Riktig!</strong> ' : '<strong>❌ Ikke helt riktig.</strong> ') + feedback;
+
+  // Lagre og tildel XP
+  if (APP) {
+    const xpGain = chosen === correct ? 25 : 10;
+    APP.quizAnswered = APP.quizAnswered || {};
+    APP.quizAnswered[id] = { chosen, correct };
+    APP.xp += xpGain;
+    updateStreak(APP);
+    saveData(APP);
+    refreshUI();
+    // Liten XP-toast uten å overskrive feedback
+    setTimeout(() => toast('⚡ +' + xpGain + ' XP opptjent!'), 400);
+  }
+}
+
+// ===== TOAST =====
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},2500);
+}
+</script>
+</body>
+</html>
